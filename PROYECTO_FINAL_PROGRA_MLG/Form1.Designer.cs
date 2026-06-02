@@ -28,44 +28,93 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
+            groupBox1 = new GroupBox();
+            label1 = new Label();
+            txtNombre = new TextBox();
+            label2 = new Label();
+            txtNIT = new TextBox();
+            chkConsumidorFinal = new CheckBox();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
-            // button1
+            // groupBox1
             // 
-            button1.Location = new Point(84, 361);
-            button1.Name = "button1";
-            button1.Size = new Size(97, 48);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            groupBox1.Controls.Add(chkConsumidorFinal);
+            groupBox1.Controls.Add(txtNIT);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(txtNombre);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Location = new Point(31, 39);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(354, 119);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Datos de Cliente";
             // 
-            // button2
+            // label1
             // 
-            button2.Location = new Point(386, 375);
-            button2.Name = "button2";
-            button2.Size = new Size(122, 47);
-            button2.TabIndex = 1;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            label1.AutoSize = true;
+            label1.Location = new Point(6, 30);
+            label1.Name = "label1";
+            label1.Size = new Size(54, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Nombre:";
+            // 
+            // txtNombre
+            // 
+            txtNombre.Location = new Point(66, 27);
+            txtNombre.Name = "txtNombre";
+            txtNombre.Size = new Size(159, 23);
+            txtNombre.TabIndex = 1;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(6, 88);
+            label2.Name = "label2";
+            label2.Size = new Size(29, 15);
+            label2.TabIndex = 2;
+            label2.Text = "NIT:";
+            label2.Click += label2_Click;
+            // 
+            // txtNIT
+            // 
+            txtNIT.Location = new Point(66, 80);
+            txtNIT.Name = "txtNIT";
+            txtNIT.Size = new Size(159, 23);
+            txtNIT.TabIndex = 3;
+            // 
+            // chkConsumidorFinal
+            // 
+            chkConsumidorFinal.AutoSize = true;
+            chkConsumidorFinal.Location = new Point(240, 84);
+            chkConsumidorFinal.Name = "chkConsumidorFinal";
+            chkConsumidorFinal.Size = new Size(45, 19);
+            chkConsumidorFinal.TabIndex = 4;
+            chkConsumidorFinal.Text = "C/F";
+            chkConsumidorFinal.UseVisualStyleBackColor = true;
+            chkConsumidorFinal.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(groupBox1);
             Name = "Form1";
             Text = "Form1";
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Button button1;
-        private Button button2;
+        private GroupBox groupBox1;
+        private Label label2;
+        private TextBox txtNombre;
+        private Label label1;
+        private CheckBox chkConsumidorFinal;
+        private TextBox txtNIT;
     }
 }
