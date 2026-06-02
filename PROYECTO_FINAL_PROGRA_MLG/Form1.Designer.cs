@@ -410,6 +410,7 @@
             btnEnviarJsonSimulado.TabIndex = 2;
             btnEnviarJsonSimulado.Text = "Enviar JSON simulado";
             btnEnviarJsonSimulado.UseVisualStyleBackColor = true;
+            btnEnviarJsonSimulado.Click += btnEnviarJsonSimulado_Click;
             // 
             // btnSimularFinalizar
             // 

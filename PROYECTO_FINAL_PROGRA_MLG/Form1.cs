@@ -10,6 +10,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         double litrosSimulados = 0.0; // Para pruebas sin Arduino
 
+
         public Form1()
         {
             InitializeComponent();
@@ -248,6 +249,28 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             lblTotalCobrar.Text = abastecimientoActual.TotalCobrado.ToString("0.00");
 
             MessageBox.Show("Simulación finalizada.");
+        }
+
+        private void btnEnviarJsonSimulado_Click(object sender, EventArgs e)
+        {
+            if (abastecimientoActual == null)
+            {
+                MessageBox.Show("No hay abastecimiento activo.");
+                return;
+            }
+
+            var json = $@"
+    {{
+        ""bomba"": {abastecimientoActual.NumeroBomba},
+        ""litrosServidos"": {litrosSimulados.ToString("0.00")},
+        ""finalizado"": true
+    }}";
+
+            controlador.RecibirRespuestaJSON(json);
+
+            lblTotalCobrar.Text = abastecimientoActual.TotalCobrado.ToString("0.00");
+
+            MessageBox.Show("JSON simulado enviado.");
         }
     }
 }
