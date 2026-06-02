@@ -36,13 +36,12 @@
             chkConsumidorFinal = new CheckBox();
             btnActualizarCliente = new Button();
             btnGuardarCliente = new Button();
-            label3 = new Label();
+            grpAbastecimiento = new GroupBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(btnGuardarCliente);
             groupBox1.Controls.Add(btnActualizarCliente);
             groupBox1.Controls.Add(chkConsumidorFinal);
@@ -119,20 +118,21 @@
             btnGuardarCliente.Text = "Guardar cliente";
             btnGuardarCliente.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // grpAbastecimiento
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(325, 171);
-            label3.Name = "label3";
-            label3.Size = new Size(38, 15);
-            label3.TabIndex = 7;
-            label3.Text = "label3";
+            grpAbastecimiento.Location = new Point(31, 238);
+            grpAbastecimiento.Name = "grpAbastecimiento";
+            grpAbastecimiento.Size = new Size(403, 200);
+            grpAbastecimiento.TabIndex = 1;
+            grpAbastecimiento.TabStop = false;
+            grpAbastecimiento.Text = "Abastecimiento";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(grpAbastecimiento);
             Controls.Add(groupBox1);
             Name = "Form1";
             Text = "Form1";
@@ -151,6 +151,6 @@
         private TextBox txtNIT;
         private Button btnGuardarCliente;
         private Button btnActualizarCliente;
-        private Label label3;
+        private GroupBox grpAbastecimiento;
     }
 }
