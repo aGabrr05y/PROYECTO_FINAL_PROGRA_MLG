@@ -19,6 +19,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         public void Finalizar()
         {
             Ocupada = false;
+
         }
     }
 }
