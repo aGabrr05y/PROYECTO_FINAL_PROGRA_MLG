@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
-    internal class Bomba
+    public class Bomba
     {
         public int Numero { get; set; }
         public bool Ocupada { get; set; }

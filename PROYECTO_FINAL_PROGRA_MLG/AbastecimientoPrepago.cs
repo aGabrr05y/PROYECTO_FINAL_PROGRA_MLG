@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
-    internal class AbastecimientoPrepago : Abastecimiento
+    public class AbastecimientoPrepago : Abastecimiento
     {
         public double MontoPagado { get; set; }
 

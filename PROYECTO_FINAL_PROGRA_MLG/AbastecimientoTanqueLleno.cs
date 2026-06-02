@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
-    internal class AbastecimientoTanqueLleno : Abastecimiento
+    public class AbastecimientoTanqueLleno : Abastecimiento
     {
         public override void Procesar()
         {

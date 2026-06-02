@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
-    internal class RegistroAbastecimientos
+    public class RegistroAbastecimientos
     {
         public List<Abastecimiento> Lista { get; set; } = new();
 
