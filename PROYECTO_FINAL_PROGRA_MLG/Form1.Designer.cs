@@ -57,12 +57,17 @@
             btnSimularMasLitros = new Button();
             btnSimularFinalizar = new Button();
             btnEnviarJsonSimulado = new Button();
+            dgvReportes = new DataGridView();
+            btnReporteDiario = new Button();
+            btnReportePrepago = new Button();
+            button1 = new Button();
             groupBox1.SuspendLayout();
             grpAbastecimiento.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             grpSimulacion.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvReportes).BeginInit();
             SuspendLayout();
             // 
             // groupBox1
@@ -310,6 +315,10 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(button1);
+            tabPage2.Controls.Add(btnReportePrepago);
+            tabPage2.Controls.Add(btnReporteDiario);
+            tabPage2.Controls.Add(dgvReportes);
             tabPage2.Controls.Add(grpSimulacion);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
@@ -359,6 +368,41 @@
             btnEnviarJsonSimulado.Text = "Enviar JSON simulado";
             btnEnviarJsonSimulado.UseVisualStyleBackColor = true;
             // 
+            // dgvReportes
+            // 
+            dgvReportes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvReportes.Location = new Point(145, 26);
+            dgvReportes.Name = "dgvReportes";
+            dgvReportes.Size = new Size(613, 301);
+            dgvReportes.TabIndex = 1;
+            // 
+            // btnReporteDiario
+            // 
+            btnReporteDiario.Location = new Point(145, 355);
+            btnReporteDiario.Name = "btnReporteDiario";
+            btnReporteDiario.Size = new Size(90, 27);
+            btnReporteDiario.TabIndex = 2;
+            btnReporteDiario.Text = "Reporte diario";
+            btnReporteDiario.UseVisualStyleBackColor = true;
+            // 
+            // btnReportePrepago
+            // 
+            btnReportePrepago.Location = new Point(264, 355);
+            btnReportePrepago.Name = "btnReportePrepago";
+            btnReportePrepago.Size = new Size(128, 27);
+            btnReportePrepago.TabIndex = 3;
+            btnReportePrepago.Text = "Reporte prepago";
+            btnReportePrepago.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(411, 355);
+            button1.Name = "button1";
+            button1.Size = new Size(128, 27);
+            button1.TabIndex = 4;
+            button1.Text = "Reporte prepago";
+            button1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -375,6 +419,7 @@
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             grpSimulacion.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvReportes).EndInit();
             ResumeLayout(false);
         }
 
@@ -409,5 +454,9 @@
         private Button btnEnviarJsonSimulado;
         private Button btnSimularFinalizar;
         private Button btnSimularMasLitros;
+        private Button button1;
+        private Button btnReportePrepago;
+        private Button btnReporteDiario;
+        private DataGridView dgvReportes;
     }
 }
