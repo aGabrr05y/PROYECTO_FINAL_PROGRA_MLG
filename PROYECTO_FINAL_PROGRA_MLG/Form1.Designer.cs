@@ -112,7 +112,7 @@
             // 
             // btnGuardarCliente
             // 
-            btnGuardarCliente.Location = new Point(129, 146);
+            btnGuardarCliente.Location = new Point(146, 146);
             btnGuardarCliente.Name = "btnGuardarCliente";
             btnGuardarCliente.Size = new Size(121, 23);
             btnGuardarCliente.TabIndex = 6;
