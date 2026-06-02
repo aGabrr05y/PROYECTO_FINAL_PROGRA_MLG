@@ -2,6 +2,12 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 {
     public partial class Form1 : Form
     {
+        ControladorCentral controlador = new ControladorCentral();
+        List<Cliente> listaClientes = new List<Cliente>();
+        string rutaClientes = "clientes.json";
+
+        double litrosSimulados = 0.0; // Para pruebas sin Arduino
+
         public Form1()
         {
             InitializeComponent();
