@@ -31,5 +31,10 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         {
 
         }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

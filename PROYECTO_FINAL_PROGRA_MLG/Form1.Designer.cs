@@ -50,8 +50,15 @@
             label5 = new Label();
             lblTotalCobrar = new Label();
             btnCobrar = new Button();
+            tabControl1 = new TabControl();
+            tabPage1 = new TabPage();
+            tabPage2 = new TabPage();
+            groupBox2 = new GroupBox();
             groupBox1.SuspendLayout();
             grpAbastecimiento.SuspendLayout();
+            tabControl1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            tabPage2.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -63,9 +70,9 @@
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(txtNombre);
             groupBox1.Controls.Add(label1);
-            groupBox1.Location = new Point(31, 12);
+            groupBox1.Location = new Point(12, 84);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(403, 168);
+            groupBox1.Size = new Size(311, 176);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Datos de Cliente";
@@ -125,7 +132,7 @@
             // 
             // btnGuardarCliente
             // 
-            btnGuardarCliente.Location = new Point(130, 137);
+            btnGuardarCliente.Location = new Point(104, 145);
             btnGuardarCliente.Name = "btnGuardarCliente";
             btnGuardarCliente.Size = new Size(121, 23);
             btnGuardarCliente.TabIndex = 6;
@@ -147,7 +154,7 @@
             grpAbastecimiento.Controls.Add(rdbTanqueLleno);
             grpAbastecimiento.Controls.Add(rdbPrepago);
             grpAbastecimiento.Controls.Add(cboBomba);
-            grpAbastecimiento.Location = new Point(37, 195);
+            grpAbastecimiento.Location = new Point(375, 55);
             grpAbastecimiento.Name = "grpAbastecimiento";
             grpAbastecimiento.Size = new Size(397, 243);
             grpAbastecimiento.TabIndex = 1;
@@ -275,19 +282,64 @@
             btnCobrar.UseVisualStyleBackColor = true;
             btnCobrar.Click += button1_Click_1;
             // 
+            // tabControl1
+            // 
+            tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(tabPage2);
+            tabControl1.Location = new Point(-4, 12);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(807, 443);
+            tabControl1.TabIndex = 2;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(groupBox1);
+            tabPage1.Controls.Add(grpAbastecimiento);
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(799, 415);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "tabPage1";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            tabPage2.Controls.Add(groupBox2);
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(799, 415);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Location = new Point(4, 20);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(282, 220);
+            groupBox2.TabIndex = 0;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Prueba";
+            groupBox2.Enter += groupBox2_Enter;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(grpAbastecimiento);
-            Controls.Add(groupBox1);
+            Controls.Add(tabControl1);
             Name = "Form1";
             Text = "Form1";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             grpAbastecimiento.ResumeLayout(false);
             grpAbastecimiento.PerformLayout();
+            tabControl1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -315,5 +367,9 @@
         private Button btnCobrar;
         private Label lblTotalCobrar;
         private Label label5;
+        private TabControl tabControl1;
+        private TabPage tabPage1;
+        private TabPage tabPage2;
+        private GroupBox groupBox2;
     }
 }
