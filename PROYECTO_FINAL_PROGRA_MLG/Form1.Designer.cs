@@ -53,12 +53,16 @@
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
-            groupBox2 = new GroupBox();
+            grpSimulacion = new GroupBox();
+            btnSimularMasLitros = new Button();
+            btnSimularFinalizar = new Button();
+            btnEnviarJsonSimulado = new Button();
             groupBox1.SuspendLayout();
             grpAbastecimiento.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
+            grpSimulacion.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -306,7 +310,7 @@
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(groupBox2);
+            tabPage2.Controls.Add(grpSimulacion);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
@@ -315,15 +319,45 @@
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
+            // grpSimulacion
             // 
-            groupBox2.Location = new Point(4, 20);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(282, 220);
-            groupBox2.TabIndex = 0;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Prueba";
-            groupBox2.Enter += groupBox2_Enter;
+            grpSimulacion.Controls.Add(btnEnviarJsonSimulado);
+            grpSimulacion.Controls.Add(btnSimularFinalizar);
+            grpSimulacion.Controls.Add(btnSimularMasLitros);
+            grpSimulacion.Location = new Point(4, 20);
+            grpSimulacion.Name = "grpSimulacion";
+            grpSimulacion.Size = new Size(93, 220);
+            grpSimulacion.TabIndex = 0;
+            grpSimulacion.TabStop = false;
+            grpSimulacion.Text = "Prueba";
+            grpSimulacion.Enter += groupBox2_Enter;
+            // 
+            // btnSimularMasLitros
+            // 
+            btnSimularMasLitros.Location = new Point(8, 47);
+            btnSimularMasLitros.Name = "btnSimularMasLitros";
+            btnSimularMasLitros.Size = new Size(75, 23);
+            btnSimularMasLitros.TabIndex = 0;
+            btnSimularMasLitros.Text = "+0.1 L";
+            btnSimularMasLitros.UseVisualStyleBackColor = true;
+            // 
+            // btnSimularFinalizar
+            // 
+            btnSimularFinalizar.Location = new Point(8, 101);
+            btnSimularFinalizar.Name = "btnSimularFinalizar";
+            btnSimularFinalizar.Size = new Size(75, 23);
+            btnSimularFinalizar.TabIndex = 1;
+            btnSimularFinalizar.Text = "Simular finalización";
+            btnSimularFinalizar.UseVisualStyleBackColor = true;
+            // 
+            // btnEnviarJsonSimulado
+            // 
+            btnEnviarJsonSimulado.Location = new Point(8, 164);
+            btnEnviarJsonSimulado.Name = "btnEnviarJsonSimulado";
+            btnEnviarJsonSimulado.Size = new Size(75, 23);
+            btnEnviarJsonSimulado.TabIndex = 2;
+            btnEnviarJsonSimulado.Text = "Enviar JSON simulado";
+            btnEnviarJsonSimulado.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -340,6 +374,7 @@
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
+            grpSimulacion.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -370,6 +405,9 @@
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private GroupBox groupBox2;
+        private GroupBox grpSimulacion;
+        private Button btnEnviarJsonSimulado;
+        private Button btnSimularFinalizar;
+        private Button btnSimularMasLitros;
     }
 }
