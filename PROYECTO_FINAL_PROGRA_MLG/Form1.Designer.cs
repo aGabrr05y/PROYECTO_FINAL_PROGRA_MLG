@@ -106,6 +106,7 @@
             btnActualizarCliente.TabIndex = 5;
             btnActualizarCliente.Text = "Actualizar";
             btnActualizarCliente.UseVisualStyleBackColor = true;
+            btnActualizarCliente.Click += btnActualizarCliente_Click;
             // 
             // chkConsumidorFinal
             // 

@@ -100,5 +100,23 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             MessageBox.Show("Cliente guardado correctamente.");
         }
+
+        private void btnActualizarCliente_Click(object sender, EventArgs e)
+        {
+            string nit = txtNIT.Text;
+
+            Cliente encontrado = listaClientes.FirstOrDefault(x => x.NIT == nit);
+
+            if (encontrado == null)
+            {
+                MessageBox.Show("No existe un cliente con ese NIT.");
+                return;
+            }
+
+            txtNombre.Text = encontrado.Nombre;
+            chkConsumidorFinal.Checked = encontrado.ConsumidorFinal;
+
+            MessageBox.Show("Cliente cargado.");
+        }
     }
 }
