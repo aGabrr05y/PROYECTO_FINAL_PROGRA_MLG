@@ -22,7 +22,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
 
 
-            //sa
+
         }
 
         public void RecibirRespuestaJSON(string json)
