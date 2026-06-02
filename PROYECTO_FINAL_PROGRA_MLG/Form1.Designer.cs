@@ -96,6 +96,7 @@
             btnGuardarCliente.TabIndex = 6;
             btnGuardarCliente.Text = "Guardar cliente";
             btnGuardarCliente.UseVisualStyleBackColor = true;
+            btnGuardarCliente.Click += btnGuardarCliente_Click;
             // 
             // btnActualizarCliente
             // 

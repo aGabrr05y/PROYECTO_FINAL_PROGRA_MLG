@@ -68,5 +68,37 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         {
 
         }
+
+        private void btnGuardarCliente_Click(object sender, EventArgs e)
+        {
+            Cliente c = new Cliente();
+
+            if (chkConsumidorFinal.Checked)
+            {
+                c.Nombre = "Consumidor Final";
+                c.NIT = "CF";
+                c.ConsumidorFinal = true;
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtNIT.Text))
+                {
+                    MessageBox.Show("Debe ingresar nombre y NIT.");
+                    return;
+                }
+
+                c.Nombre = txtNombre.Text;
+                c.NIT = txtNIT.Text;
+                c.ConsumidorFinal = false;
+            }
+
+            // Si ya existe, lo reemplaza
+            listaClientes.RemoveAll(x => x.NIT == c.NIT);
+            listaClientes.Add(c);
+
+            GuardarClientes();
+
+            MessageBox.Show("Cliente guardado correctamente.");
+        }
     }
 }
