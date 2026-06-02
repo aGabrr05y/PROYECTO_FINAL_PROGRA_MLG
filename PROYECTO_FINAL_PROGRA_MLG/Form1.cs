@@ -26,5 +26,10 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         {
 
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

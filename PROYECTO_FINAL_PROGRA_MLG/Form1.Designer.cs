@@ -47,6 +47,9 @@
             btnIniciarAbastecimiento = new Button();
             label4 = new Label();
             lblLitrosServidos = new Label();
+            label5 = new Label();
+            lblTotalCobrar = new Label();
+            btnCobrar = new Button();
             groupBox1.SuspendLayout();
             grpAbastecimiento.SuspendLayout();
             SuspendLayout();
@@ -131,6 +134,9 @@
             // 
             // grpAbastecimiento
             // 
+            grpAbastecimiento.Controls.Add(btnCobrar);
+            grpAbastecimiento.Controls.Add(lblTotalCobrar);
+            grpAbastecimiento.Controls.Add(label5);
             grpAbastecimiento.Controls.Add(lblLitrosServidos);
             grpAbastecimiento.Controls.Add(label4);
             grpAbastecimiento.Controls.Add(btnIniciarAbastecimiento);
@@ -216,9 +222,9 @@
             // 
             // btnIniciarAbastecimiento
             // 
-            btnIniciarAbastecimiento.Location = new Point(225, 182);
+            btnIniciarAbastecimiento.Location = new Point(212, 145);
             btnIniciarAbastecimiento.Name = "btnIniciarAbastecimiento";
-            btnIniciarAbastecimiento.Size = new Size(151, 23);
+            btnIniciarAbastecimiento.Size = new Size(146, 23);
             btnIniciarAbastecimiento.TabIndex = 11;
             btnIniciarAbastecimiento.Text = "Iniciar abastecimiento";
             btnIniciarAbastecimiento.UseVisualStyleBackColor = true;
@@ -240,6 +246,34 @@
             lblLitrosServidos.Size = new Size(28, 15);
             lblLitrosServidos.TabIndex = 13;
             lblLitrosServidos.Text = "0.00";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(6, 215);
+            label5.Name = "label5";
+            label5.Size = new Size(102, 15);
+            label5.TabIndex = 14;
+            label5.Text = "Total a cobrar (Q):";
+            // 
+            // lblTotalCobrar
+            // 
+            lblTotalCobrar.AutoSize = true;
+            lblTotalCobrar.Location = new Point(114, 215);
+            lblTotalCobrar.Name = "lblTotalCobrar";
+            lblTotalCobrar.Size = new Size(28, 15);
+            lblTotalCobrar.TabIndex = 15;
+            lblTotalCobrar.Text = "0.00";
+            // 
+            // btnCobrar
+            // 
+            btnCobrar.Location = new Point(212, 182);
+            btnCobrar.Name = "btnCobrar";
+            btnCobrar.Size = new Size(146, 23);
+            btnCobrar.TabIndex = 16;
+            btnCobrar.Text = "Cobrar ";
+            btnCobrar.UseVisualStyleBackColor = true;
+            btnCobrar.Click += button1_Click_1;
             // 
             // Form1
             // 
@@ -278,5 +312,8 @@
         private Label lblLitrosServidos;
         private Label label4;
         private Button btnIniciarAbastecimiento;
+        private Button btnCobrar;
+        private Label lblTotalCobrar;
+        private Label label5;
     }
 }
