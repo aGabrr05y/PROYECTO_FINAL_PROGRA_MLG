@@ -34,11 +34,15 @@
             label2 = new Label();
             txtNIT = new TextBox();
             chkConsumidorFinal = new CheckBox();
+            btnActualizarCliente = new Button();
+            btnGuardarCliente = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(btnGuardarCliente);
+            groupBox1.Controls.Add(btnActualizarCliente);
             groupBox1.Controls.Add(chkConsumidorFinal);
             groupBox1.Controls.Add(txtNIT);
             groupBox1.Controls.Add(label2);
@@ -46,7 +50,7 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Location = new Point(31, 39);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(354, 119);
+            groupBox1.Size = new Size(403, 193);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Datos de Cliente";
@@ -87,13 +91,31 @@
             // chkConsumidorFinal
             // 
             chkConsumidorFinal.AutoSize = true;
-            chkConsumidorFinal.Location = new Point(240, 84);
+            chkConsumidorFinal.Location = new Point(66, 109);
             chkConsumidorFinal.Name = "chkConsumidorFinal";
             chkConsumidorFinal.Size = new Size(45, 19);
             chkConsumidorFinal.TabIndex = 4;
             chkConsumidorFinal.Text = "C/F";
             chkConsumidorFinal.UseVisualStyleBackColor = true;
             chkConsumidorFinal.CheckedChanged += checkBox1_CheckedChanged;
+            // 
+            // btnActualizarCliente
+            // 
+            btnActualizarCliente.Location = new Point(231, 80);
+            btnActualizarCliente.Name = "btnActualizarCliente";
+            btnActualizarCliente.Size = new Size(75, 23);
+            btnActualizarCliente.TabIndex = 5;
+            btnActualizarCliente.Text = "Actualizar";
+            btnActualizarCliente.UseVisualStyleBackColor = true;
+            // 
+            // btnGuardarCliente
+            // 
+            btnGuardarCliente.Location = new Point(125, 149);
+            btnGuardarCliente.Name = "btnGuardarCliente";
+            btnGuardarCliente.Size = new Size(111, 23);
+            btnGuardarCliente.TabIndex = 6;
+            btnGuardarCliente.Text = "Guardar cliente";
+            btnGuardarCliente.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -116,5 +138,7 @@
         private Label label1;
         private CheckBox chkConsumidorFinal;
         private TextBox txtNIT;
+        private Button btnGuardarCliente;
+        private Button btnActualizarCliente;
     }
 }
