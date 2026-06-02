@@ -6,5 +6,10 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
