@@ -116,7 +116,7 @@
             btnGuardarCliente.Name = "btnGuardarCliente";
             btnGuardarCliente.Size = new Size(121, 23);
             btnGuardarCliente.TabIndex = 6;
-            btnGuardarCliente.Text = "Guardar clientee";
+            btnGuardarCliente.Text = "Guardar cliente";
             btnGuardarCliente.UseVisualStyleBackColor = true;
             // 
             // label3
