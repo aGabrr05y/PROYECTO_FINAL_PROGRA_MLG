@@ -298,20 +298,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             dgvReportes.DataSource = null;
             dgvReportes.DataSource = lista;
         }
-        public Bomba BombaMasUsada(Bomba[] bombas)
-        {
-            return bombas.OrderByDescending(b => b.VecesUsada).First();
-        }
 
         private void btnReporteBombaMasUsada_Click(object sender, EventArgs e)
-        {
-            return bombas.OrderByDescending(b => b.VecesUsada).First();
-        }
-        public Bomba BombaMenosUsada(Bomba[] bombas)
-        {
-            return bombas.OrderBy(b => b.VecesUsada).First();
-        }
-        private void btnReporteBombaMenosUsada_Click(object sender, EventArgs e)
         {
             var bomba = controlador.Registro.BombaMasUsada(controlador.Bombas);
 
@@ -319,7 +307,17 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             dgvReportes.DataSource = new List<Bomba> { bomba };
         }
 
+        private void btnReporteBombaMenosUsada_Click(object sender, EventArgs e)
+        {
+            var bomba = controlador.Registro.BombaMenosUsada(controlador.Bombas);
 
+            dgvReportes.DataSource = null;
+            dgvReportes.DataSource = new List<Bomba> { bomba };
+        }
 
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

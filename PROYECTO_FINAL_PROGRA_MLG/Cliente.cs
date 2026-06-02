@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
-    internal class Cliente
+    public class Cliente
     {
         public string Nombre { get; set; }
         public string NIT { get; set; }

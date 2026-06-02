@@ -43,5 +43,16 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 Lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Abastecimiento>>(json);
             }
         }
+
+        public Bomba BombaMasUsada(Bomba[] bombas)
+        {
+            return bombas.OrderByDescending(b => b.VecesUsada).First();
+        }
+
+        public Bomba BombaMenosUsada(Bomba[] bombas)
+        {
+            return bombas.OrderBy(b => b.VecesUsada).First();
+        }
+
     }
 }

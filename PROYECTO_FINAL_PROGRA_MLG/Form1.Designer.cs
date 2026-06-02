@@ -63,6 +63,7 @@
             btnEnviarJsonSimulado = new Button();
             btnSimularFinalizar = new Button();
             btnSimularMasLitros = new Button();
+            dtpFechaReporte = new DateTimePicker();
             groupBox1.SuspendLayout();
             grpAbastecimiento.SuspendLayout();
             tabControl1.SuspendLayout();
@@ -321,6 +322,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(dtpFechaReporte);
             tabPage2.Controls.Add(btnReporteBombaMenosUsada);
             tabPage2.Controls.Add(btnReporteBombaMasUsada);
             tabPage2.Controls.Add(btnReporteTanqueLleno);
@@ -335,10 +337,11 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Click += tabPage2_Click;
             // 
             // btnReporteBombaMenosUsada
             // 
-            btnReporteBombaMenosUsada.Location = new Point(709, 159);
+            btnReporteBombaMenosUsada.Location = new Point(729, 263);
             btnReporteBombaMenosUsada.Name = "btnReporteBombaMenosUsada";
             btnReporteBombaMenosUsada.Size = new Size(142, 28);
             btnReporteBombaMenosUsada.TabIndex = 7;
@@ -348,7 +351,7 @@
             // 
             // btnReporteBombaMasUsada
             // 
-            btnReporteBombaMasUsada.Location = new Point(709, 125);
+            btnReporteBombaMasUsada.Location = new Point(729, 229);
             btnReporteBombaMasUsada.Name = "btnReporteBombaMasUsada";
             btnReporteBombaMasUsada.Size = new Size(142, 28);
             btnReporteBombaMasUsada.TabIndex = 6;
@@ -358,7 +361,7 @@
             // 
             // btnReporteTanqueLleno
             // 
-            btnReporteTanqueLleno.Location = new Point(709, 96);
+            btnReporteTanqueLleno.Location = new Point(729, 200);
             btnReporteTanqueLleno.Name = "btnReporteTanqueLleno";
             btnReporteTanqueLleno.Size = new Size(142, 23);
             btnReporteTanqueLleno.TabIndex = 5;
@@ -368,7 +371,7 @@
             // 
             // btnReportePrepago
             // 
-            btnReportePrepago.Location = new Point(709, 65);
+            btnReportePrepago.Location = new Point(729, 169);
             btnReportePrepago.Name = "btnReportePrepago";
             btnReportePrepago.Size = new Size(142, 25);
             btnReportePrepago.TabIndex = 3;
@@ -378,7 +381,7 @@
             // 
             // btnReporteDiario
             // 
-            btnReporteDiario.Location = new Point(709, 32);
+            btnReporteDiario.Location = new Point(729, 136);
             btnReporteDiario.Name = "btnReporteDiario";
             btnReporteDiario.Size = new Size(142, 27);
             btnReporteDiario.TabIndex = 2;
@@ -389,7 +392,7 @@
             // dgvReportes
             // 
             dgvReportes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvReportes.Location = new Point(90, 20);
+            dgvReportes.Location = new Point(93, 67);
             dgvReportes.Name = "dgvReportes";
             dgvReportes.Size = new Size(613, 301);
             dgvReportes.TabIndex = 1;
@@ -436,6 +439,14 @@
             btnSimularMasLitros.Text = "+0.1 L";
             btnSimularMasLitros.UseVisualStyleBackColor = true;
             btnSimularMasLitros.Click += btnSimularMasLitros_Click;
+            // 
+            // dtpFechaReporte
+            // 
+            dtpFechaReporte.Format = DateTimePickerFormat.Short;
+            dtpFechaReporte.Location = new Point(729, 81);
+            dtpFechaReporte.Name = "dtpFechaReporte";
+            dtpFechaReporte.Size = new Size(142, 23);
+            dtpFechaReporte.TabIndex = 8;
             // 
             // Form1
             // 
@@ -495,5 +506,6 @@
         private Button btnReporteBombaMasUsada;
         private Button btnReporteTanqueLleno;
         private Button btnReporteBombaMenosUsada;
+        private DateTimePicker dtpFechaReporte;
     }
 }
