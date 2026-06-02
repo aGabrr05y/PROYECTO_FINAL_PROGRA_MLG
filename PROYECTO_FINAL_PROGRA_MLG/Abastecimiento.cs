@@ -6,5 +6,14 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 {
     internal class Abastecimiento
     {
+        public int Id { get; set; }
+        public Cliente Cliente { get; set; }
+        public int NumeroBomba { get; set; }
+        public DateTime FechaHora { get; set; } = DateTime.Now;
+        public double LitrosServidos { get; set; }
+        public double TotalCobrado { get; set; }
+        public double PrecioPorLitro { get; set; } = 37.35;
+
+        public abstract void Procesar();
     }
 }
