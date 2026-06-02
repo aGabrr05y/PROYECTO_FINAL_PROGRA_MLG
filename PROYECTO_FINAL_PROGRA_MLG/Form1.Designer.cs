@@ -42,6 +42,11 @@
             rdbTanqueLleno = new RadioButton();
             lblMonto = new Label();
             txtMonto = new TextBox();
+            lblPrecioLitro = new Label();
+            label3 = new Label();
+            btnIniciarAbastecimiento = new Button();
+            label4 = new Label();
+            lblLitrosServidos = new Label();
             groupBox1.SuspendLayout();
             grpAbastecimiento.SuspendLayout();
             SuspendLayout();
@@ -55,9 +60,9 @@
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(txtNombre);
             groupBox1.Controls.Add(label1);
-            groupBox1.Location = new Point(31, 39);
+            groupBox1.Location = new Point(31, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(403, 193);
+            groupBox1.Size = new Size(403, 168);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Datos de Cliente";
@@ -117,7 +122,7 @@
             // 
             // btnGuardarCliente
             // 
-            btnGuardarCliente.Location = new Point(146, 146);
+            btnGuardarCliente.Location = new Point(130, 137);
             btnGuardarCliente.Name = "btnGuardarCliente";
             btnGuardarCliente.Size = new Size(121, 23);
             btnGuardarCliente.TabIndex = 6;
@@ -126,14 +131,19 @@
             // 
             // grpAbastecimiento
             // 
+            grpAbastecimiento.Controls.Add(lblLitrosServidos);
+            grpAbastecimiento.Controls.Add(label4);
+            grpAbastecimiento.Controls.Add(btnIniciarAbastecimiento);
+            grpAbastecimiento.Controls.Add(label3);
+            grpAbastecimiento.Controls.Add(lblPrecioLitro);
             grpAbastecimiento.Controls.Add(txtMonto);
             grpAbastecimiento.Controls.Add(lblMonto);
             grpAbastecimiento.Controls.Add(rdbTanqueLleno);
             grpAbastecimiento.Controls.Add(rdbPrepago);
             grpAbastecimiento.Controls.Add(cboBomba);
-            grpAbastecimiento.Location = new Point(31, 238);
+            grpAbastecimiento.Location = new Point(37, 195);
             grpAbastecimiento.Name = "grpAbastecimiento";
-            grpAbastecimiento.Size = new Size(403, 200);
+            grpAbastecimiento.Size = new Size(397, 243);
             grpAbastecimiento.TabIndex = 1;
             grpAbastecimiento.TabStop = false;
             grpAbastecimiento.Text = "Abastecimiento";
@@ -142,7 +152,7 @@
             // 
             cboBomba.FormattingEnabled = true;
             cboBomba.Items.AddRange(new object[] { "1", "2" });
-            cboBomba.Location = new Point(187, 43);
+            cboBomba.Location = new Point(6, 49);
             cboBomba.Name = "cboBomba";
             cboBomba.Size = new Size(121, 23);
             cboBomba.TabIndex = 0;
@@ -150,7 +160,7 @@
             // rdbPrepago
             // 
             rdbPrepago.AutoSize = true;
-            rdbPrepago.Location = new Point(201, 116);
+            rdbPrepago.Location = new Point(6, 78);
             rdbPrepago.Name = "rdbPrepago";
             rdbPrepago.Size = new Size(128, 19);
             rdbPrepago.TabIndex = 1;
@@ -161,7 +171,7 @@
             // rdbTanqueLleno
             // 
             rdbTanqueLleno.AutoSize = true;
-            rdbTanqueLleno.Location = new Point(210, 156);
+            rdbTanqueLleno.Location = new Point(6, 149);
             rdbTanqueLleno.Name = "rdbTanqueLleno";
             rdbTanqueLleno.Size = new Size(93, 19);
             rdbTanqueLleno.TabIndex = 2;
@@ -180,10 +190,56 @@
             // 
             // txtMonto
             // 
-            txtMonto.Location = new Point(78, 116);
+            txtMonto.Location = new Point(78, 110);
             txtMonto.Name = "txtMonto";
             txtMonto.Size = new Size(100, 23);
             txtMonto.TabIndex = 8;
+            // 
+            // lblPrecioLitro
+            // 
+            lblPrecioLitro.AutoSize = true;
+            lblPrecioLitro.Location = new Point(6, 19);
+            lblPrecioLitro.Name = "lblPrecioLitro";
+            lblPrecioLitro.Size = new Size(88, 15);
+            lblPrecioLitro.TabIndex = 9;
+            lblPrecioLitro.Text = "Precio por litro:";
+            lblPrecioLitro.Click += lblPrecioLitro_Click;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(100, 19);
+            label3.Name = "label3";
+            label3.Size = new Size(43, 15);
+            label3.TabIndex = 10;
+            label3.Text = "Q37.35";
+            // 
+            // btnIniciarAbastecimiento
+            // 
+            btnIniciarAbastecimiento.Location = new Point(225, 182);
+            btnIniciarAbastecimiento.Name = "btnIniciarAbastecimiento";
+            btnIniciarAbastecimiento.Size = new Size(151, 23);
+            btnIniciarAbastecimiento.TabIndex = 11;
+            btnIniciarAbastecimiento.Text = "Iniciar abastecimiento";
+            btnIniciarAbastecimiento.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(6, 190);
+            label4.Name = "label4";
+            label4.Size = new Size(86, 15);
+            label4.TabIndex = 12;
+            label4.Text = "Litros Servidos:";
+            // 
+            // lblLitrosServidos
+            // 
+            lblLitrosServidos.AutoSize = true;
+            lblLitrosServidos.Location = new Point(100, 190);
+            lblLitrosServidos.Name = "lblLitrosServidos";
+            lblLitrosServidos.Size = new Size(28, 15);
+            lblLitrosServidos.TabIndex = 13;
+            lblLitrosServidos.Text = "0.00";
             // 
             // Form1
             // 
@@ -217,5 +273,10 @@
         private Label lblMonto;
         private RadioButton rdbTanqueLleno;
         private RadioButton rdbPrepago;
+        private Label lblPrecioLitro;
+        private Label label3;
+        private Label lblLitrosServidos;
+        private Label label4;
+        private Button btnIniciarAbastecimiento;
     }
 }

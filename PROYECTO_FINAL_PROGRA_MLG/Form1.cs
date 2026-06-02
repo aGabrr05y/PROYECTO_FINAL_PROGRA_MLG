@@ -21,5 +21,10 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         {
 
         }
+
+        private void lblPrecioLitro_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
