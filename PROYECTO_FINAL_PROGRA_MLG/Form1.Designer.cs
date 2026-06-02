@@ -36,11 +36,13 @@
             chkConsumidorFinal = new CheckBox();
             btnActualizarCliente = new Button();
             btnGuardarCliente = new Button();
+            label3 = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(btnGuardarCliente);
             groupBox1.Controls.Add(btnActualizarCliente);
             groupBox1.Controls.Add(chkConsumidorFinal);
@@ -112,10 +114,19 @@
             // 
             btnGuardarCliente.Location = new Point(125, 149);
             btnGuardarCliente.Name = "btnGuardarCliente";
-            btnGuardarCliente.Size = new Size(111, 23);
+            btnGuardarCliente.Size = new Size(121, 23);
             btnGuardarCliente.TabIndex = 6;
-            btnGuardarCliente.Text = "Guardar cliente";
+            btnGuardarCliente.Text = "Guardar clientee";
             btnGuardarCliente.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(325, 171);
+            label3.Name = "label3";
+            label3.Size = new Size(38, 15);
+            label3.TabIndex = 7;
+            label3.Text = "label3";
             // 
             // Form1
             // 
@@ -140,5 +151,6 @@
         private TextBox txtNIT;
         private Button btnGuardarCliente;
         private Button btnActualizarCliente;
+        private Label label3;
     }
 }
