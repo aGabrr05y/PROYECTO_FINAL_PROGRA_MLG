@@ -43,7 +43,7 @@
             lblLitrosServidos = new Label();
             label4 = new Label();
             btnIniciarAbastecimiento = new Button();
-            label3 = new Label();
+            lblPrecioActual = new Label();
             lblPrecioLitro = new Label();
             txtMonto = new TextBox();
             lblMonto = new Label();
@@ -158,7 +158,7 @@
             grpAbastecimiento.Controls.Add(lblLitrosServidos);
             grpAbastecimiento.Controls.Add(label4);
             grpAbastecimiento.Controls.Add(btnIniciarAbastecimiento);
-            grpAbastecimiento.Controls.Add(label3);
+            grpAbastecimiento.Controls.Add(lblPrecioActual);
             grpAbastecimiento.Controls.Add(lblPrecioLitro);
             grpAbastecimiento.Controls.Add(txtMonto);
             grpAbastecimiento.Controls.Add(lblMonto);
@@ -227,14 +227,15 @@
             btnIniciarAbastecimiento.Text = "Iniciar abastecimiento";
             btnIniciarAbastecimiento.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // lblPrecioActual
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(100, 19);
-            label3.Name = "label3";
-            label3.Size = new Size(43, 15);
-            label3.TabIndex = 10;
-            label3.Text = "Q37.35";
+            lblPrecioActual.AutoSize = true;
+            lblPrecioActual.Location = new Point(100, 19);
+            lblPrecioActual.Name = "lblPrecioActual";
+            lblPrecioActual.Size = new Size(43, 15);
+            lblPrecioActual.TabIndex = 10;
+            lblPrecioActual.Text = "Q37.35";
+            lblPrecioActual.Click += label3_Click;
             // 
             // lblPrecioLitro
             // 
@@ -462,7 +463,7 @@
         private RadioButton rdbTanqueLleno;
         private RadioButton rdbPrepago;
         private Label lblPrecioLitro;
-        private Label label3;
+        private Label lblPrecioActual;
         private Label lblLitrosServidos;
         private Label label4;
         private Button btnIniciarAbastecimiento;
