@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
-    internal class Abastecimiento
+    internal abstract class Abastecimiento
     {
         public int Id { get; set; }
         public Cliente Cliente { get; set; }
