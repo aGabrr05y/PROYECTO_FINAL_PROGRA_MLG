@@ -60,7 +60,9 @@
             dgvReportes = new DataGridView();
             btnReporteDiario = new Button();
             btnReportePrepago = new Button();
-            button1 = new Button();
+            btnReporteTanqueLleno = new Button();
+            btnReporteBombaMasUsada = new Button();
+            btnReporteBombaMenosUsada = new Button();
             groupBox1.SuspendLayout();
             grpAbastecimiento.SuspendLayout();
             tabControl1.SuspendLayout();
@@ -298,7 +300,7 @@
             tabControl1.Location = new Point(-4, 12);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(807, 443);
+            tabControl1.Size = new Size(892, 431);
             tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -315,7 +317,9 @@
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(button1);
+            tabPage2.Controls.Add(btnReporteBombaMenosUsada);
+            tabPage2.Controls.Add(btnReporteBombaMasUsada);
+            tabPage2.Controls.Add(btnReporteTanqueLleno);
             tabPage2.Controls.Add(btnReportePrepago);
             tabPage2.Controls.Add(btnReporteDiario);
             tabPage2.Controls.Add(dgvReportes);
@@ -323,7 +327,7 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(799, 415);
+            tabPage2.Size = new Size(884, 403);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
@@ -335,7 +339,7 @@
             grpSimulacion.Controls.Add(btnSimularMasLitros);
             grpSimulacion.Location = new Point(4, 20);
             grpSimulacion.Name = "grpSimulacion";
-            grpSimulacion.Size = new Size(93, 220);
+            grpSimulacion.Size = new Size(81, 221);
             grpSimulacion.TabIndex = 0;
             grpSimulacion.TabStop = false;
             grpSimulacion.Text = "Prueba";
@@ -371,43 +375,61 @@
             // dgvReportes
             // 
             dgvReportes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvReportes.Location = new Point(145, 26);
+            dgvReportes.Location = new Point(90, 20);
             dgvReportes.Name = "dgvReportes";
             dgvReportes.Size = new Size(613, 301);
             dgvReportes.TabIndex = 1;
             // 
             // btnReporteDiario
             // 
-            btnReporteDiario.Location = new Point(145, 355);
+            btnReporteDiario.Location = new Point(709, 32);
             btnReporteDiario.Name = "btnReporteDiario";
-            btnReporteDiario.Size = new Size(90, 27);
+            btnReporteDiario.Size = new Size(142, 27);
             btnReporteDiario.TabIndex = 2;
             btnReporteDiario.Text = "Reporte diario";
             btnReporteDiario.UseVisualStyleBackColor = true;
             // 
             // btnReportePrepago
             // 
-            btnReportePrepago.Location = new Point(264, 355);
+            btnReportePrepago.Location = new Point(709, 65);
             btnReportePrepago.Name = "btnReportePrepago";
-            btnReportePrepago.Size = new Size(128, 27);
+            btnReportePrepago.Size = new Size(142, 25);
             btnReportePrepago.TabIndex = 3;
             btnReportePrepago.Text = "Reporte prepago";
             btnReportePrepago.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnReporteTanqueLleno
             // 
-            button1.Location = new Point(411, 355);
-            button1.Name = "button1";
-            button1.Size = new Size(128, 27);
-            button1.TabIndex = 4;
-            button1.Text = "Reporte prepago";
-            button1.UseVisualStyleBackColor = true;
+            btnReporteTanqueLleno.Location = new Point(709, 96);
+            btnReporteTanqueLleno.Name = "btnReporteTanqueLleno";
+            btnReporteTanqueLleno.Size = new Size(142, 23);
+            btnReporteTanqueLleno.TabIndex = 5;
+            btnReporteTanqueLleno.Text = "Reporte tanque lleno";
+            btnReporteTanqueLleno.UseVisualStyleBackColor = true;
+            // 
+            // btnReporteBombaMasUsada
+            // 
+            btnReporteBombaMasUsada.Location = new Point(709, 125);
+            btnReporteBombaMasUsada.Name = "btnReporteBombaMasUsada";
+            btnReporteBombaMasUsada.Size = new Size(142, 28);
+            btnReporteBombaMasUsada.TabIndex = 6;
+            btnReporteBombaMasUsada.Text = "Bomba más usada";
+            btnReporteBombaMasUsada.UseVisualStyleBackColor = true;
+            // 
+            // btnReporteBombaMenosUsada
+            // 
+            btnReporteBombaMenosUsada.Location = new Point(709, 159);
+            btnReporteBombaMenosUsada.Name = "btnReporteBombaMenosUsada";
+            btnReporteBombaMenosUsada.Size = new Size(142, 28);
+            btnReporteBombaMenosUsada.TabIndex = 7;
+            btnReporteBombaMenosUsada.Text = "Bomba menos usada";
+            btnReporteBombaMenosUsada.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(883, 530);
             Controls.Add(tabControl1);
             Name = "Form1";
             Text = "Form1";
@@ -458,5 +480,8 @@
         private Button btnReportePrepago;
         private Button btnReporteDiario;
         private DataGridView dgvReportes;
+        private Button btnReporteBombaMasUsada;
+        private Button btnReporteTanqueLleno;
+        private Button btnReporteBombaMenosUsada;
     }
 }
