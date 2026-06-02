@@ -118,5 +118,85 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             MessageBox.Show("Cliente cargado.");
         }
+
+
+
+
+
+
+        private Abastecimiento abastecimientoActual;
+
+        private void btnIniciarAbastecimiento_Click(object sender, EventArgs e)
+        {
+            if (cboBomba.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione una bomba.");
+                return;
+            }
+
+            int numeroBomba = int.Parse(cboBomba.SelectedItem.ToString());
+            Bomba bomba = controlador.Bombas[numeroBomba - 1];
+
+            if (bomba.Ocupada)
+            {
+                MessageBox.Show("La bomba está ocupada.");
+                return;
+            }
+
+            // Obtener cliente
+            Cliente cliente;
+
+            if (chkConsumidorFinal.Checked)
+            {
+                cliente = new Cliente { Nombre = "Consumidor Final", NIT = "CF", ConsumidorFinal = true };
+            }
+            else
+            {
+                cliente = listaClientes.FirstOrDefault(x => x.NIT == txtNIT.Text);
+
+                if (cliente == null)
+                {
+                    MessageBox.Show("Debe guardar el cliente primero.");
+                    return;
+                }
+            }
+
+            // Crear abastecimiento
+            if (rdbPrepago.Checked)
+            {
+                if (!double.TryParse(txtMonto.Text, out double monto))
+                {
+                    MessageBox.Show("Monto inválido.");
+                    return;
+                }
+
+                abastecimientoActual = new AbastecimientoPrepago
+                {
+                    Cliente = cliente,
+                    NumeroBomba = numeroBomba,
+                    MontoPagado = monto
+                };
+            }
+            else if (rdbTanqueLleno.Checked)
+            {
+                abastecimientoActual = new AbastecimientoTanqueLleno
+                {
+                    Cliente = cliente,
+                    NumeroBomba = numeroBomba
+                };
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un tipo de abastecimiento.");
+                return;
+            }
+
+            bomba.Iniciar();
+            litrosSimulados = 0;
+            lblLitrosServidos.Text = "0.00";
+            lblTotalCobrar.Text = "0.00";
+
+            MessageBox.Show("Abastecimiento iniciado.");
+        }
     }
 }

@@ -228,6 +228,7 @@
             btnIniciarAbastecimiento.TabIndex = 11;
             btnIniciarAbastecimiento.Text = "Iniciar abastecimiento";
             btnIniciarAbastecimiento.UseVisualStyleBackColor = true;
+            btnIniciarAbastecimiento.Click += btnIniciarAbastecimiento_Click;
             // 
             // lblPrecioActual
             // 
