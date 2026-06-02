@@ -37,7 +37,13 @@
             btnActualizarCliente = new Button();
             btnGuardarCliente = new Button();
             grpAbastecimiento = new GroupBox();
+            cboBomba = new ComboBox();
+            rdbPrepago = new RadioButton();
+            rdbTanqueLleno = new RadioButton();
+            lblMonto = new Label();
+            txtMonto = new TextBox();
             groupBox1.SuspendLayout();
+            grpAbastecimiento.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -120,12 +126,64 @@
             // 
             // grpAbastecimiento
             // 
+            grpAbastecimiento.Controls.Add(txtMonto);
+            grpAbastecimiento.Controls.Add(lblMonto);
+            grpAbastecimiento.Controls.Add(rdbTanqueLleno);
+            grpAbastecimiento.Controls.Add(rdbPrepago);
+            grpAbastecimiento.Controls.Add(cboBomba);
             grpAbastecimiento.Location = new Point(31, 238);
             grpAbastecimiento.Name = "grpAbastecimiento";
             grpAbastecimiento.Size = new Size(403, 200);
             grpAbastecimiento.TabIndex = 1;
             grpAbastecimiento.TabStop = false;
             grpAbastecimiento.Text = "Abastecimiento";
+            // 
+            // cboBomba
+            // 
+            cboBomba.FormattingEnabled = true;
+            cboBomba.Items.AddRange(new object[] { "1", "2" });
+            cboBomba.Location = new Point(187, 43);
+            cboBomba.Name = "cboBomba";
+            cboBomba.Size = new Size(121, 23);
+            cboBomba.TabIndex = 0;
+            // 
+            // rdbPrepago
+            // 
+            rdbPrepago.AutoSize = true;
+            rdbPrepago.Location = new Point(201, 116);
+            rdbPrepago.Name = "rdbPrepago";
+            rdbPrepago.Size = new Size(128, 19);
+            rdbPrepago.TabIndex = 1;
+            rdbPrepago.TabStop = true;
+            rdbPrepago.Text = "Prepago (monto Q)";
+            rdbPrepago.UseVisualStyleBackColor = true;
+            // 
+            // rdbTanqueLleno
+            // 
+            rdbTanqueLleno.AutoSize = true;
+            rdbTanqueLleno.Location = new Point(210, 156);
+            rdbTanqueLleno.Name = "rdbTanqueLleno";
+            rdbTanqueLleno.Size = new Size(93, 19);
+            rdbTanqueLleno.TabIndex = 2;
+            rdbTanqueLleno.TabStop = true;
+            rdbTanqueLleno.Text = "Tanque lleno";
+            rdbTanqueLleno.UseVisualStyleBackColor = true;
+            // 
+            // lblMonto
+            // 
+            lblMonto.AutoSize = true;
+            lblMonto.Location = new Point(6, 118);
+            lblMonto.Name = "lblMonto";
+            lblMonto.Size = new Size(66, 15);
+            lblMonto.TabIndex = 7;
+            lblMonto.Text = "Monto (Q):";
+            // 
+            // txtMonto
+            // 
+            txtMonto.Location = new Point(78, 116);
+            txtMonto.Name = "txtMonto";
+            txtMonto.Size = new Size(100, 23);
+            txtMonto.TabIndex = 8;
             // 
             // Form1
             // 
@@ -138,6 +196,8 @@
             Text = "Form1";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            grpAbastecimiento.ResumeLayout(false);
+            grpAbastecimiento.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -152,5 +212,10 @@
         private Button btnGuardarCliente;
         private Button btnActualizarCliente;
         private GroupBox grpAbastecimiento;
+        private ComboBox cboBomba;
+        private TextBox txtMonto;
+        private Label lblMonto;
+        private RadioButton rdbTanqueLleno;
+        private RadioButton rdbPrepago;
     }
 }
