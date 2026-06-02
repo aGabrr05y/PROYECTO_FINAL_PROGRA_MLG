@@ -419,6 +419,7 @@
             btnSimularFinalizar.TabIndex = 1;
             btnSimularFinalizar.Text = "Simular finalización";
             btnSimularFinalizar.UseVisualStyleBackColor = true;
+            btnSimularFinalizar.Click += btnSimularFinalizar_Click;
             // 
             // btnSimularMasLitros
             // 
@@ -428,6 +429,7 @@
             btnSimularMasLitros.TabIndex = 0;
             btnSimularMasLitros.Text = "+0.1 L";
             btnSimularMasLitros.UseVisualStyleBackColor = true;
+            btnSimularMasLitros.Click += btnSimularMasLitros_Click;
             // 
             // Form1
             // 

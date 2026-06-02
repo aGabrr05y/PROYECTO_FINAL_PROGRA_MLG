@@ -56,7 +56,24 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            if (abastecimientoActual == null)
+            {
+                MessageBox.Show("No hay abastecimiento activo.");
+                return;
+            }
 
+            controlador.Registro.Agregar(abastecimientoActual);
+
+            // Liberar bomba
+            controlador.Bombas[abastecimientoActual.NumeroBomba - 1].Finalizar();
+
+            MessageBox.Show("Abastecimiento guardado.");
+
+            // Limpiar
+            abastecimientoActual = null;
+            lblLitrosServidos.Text = "0.00";
+            lblTotalCobrar.Text = "0.00";
+            txtMonto.Clear();
         }
 
         private void groupBox2_Enter(object sender, EventArgs e)
@@ -197,6 +214,40 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             lblTotalCobrar.Text = "0.00";
 
             MessageBox.Show("Abastecimiento iniciado.");
+        }
+
+        private void btnSimularMasLitros_Click(object sender, EventArgs e)
+        {
+            litrosSimulados += 0.1;
+            lblLitrosServidos.Text = litrosSimulados.ToString("0.00");
+
+            if (abastecimientoActual is AbastecimientoPrepago prepago)
+            {
+                double litrosMax = prepago.MontoPagado / 37.35;
+
+                if (litrosSimulados >= litrosMax)
+                {
+                    litrosSimulados = litrosMax;
+                    lblLitrosServidos.Text = litrosSimulados.ToString("0.00");
+                    MessageBox.Show("Prepago completado.");
+                }
+            }
+        }
+
+        private void btnSimularFinalizar_Click(object sender, EventArgs e)
+        {
+            if (abastecimientoActual == null)
+            {
+                MessageBox.Show("No hay abastecimiento en curso.");
+                return;
+            }
+
+            abastecimientoActual.LitrosServidos = litrosSimulados;
+            abastecimientoActual.Procesar();
+
+            lblTotalCobrar.Text = abastecimientoActual.TotalCobrado.ToString("0.00");
+
+            MessageBox.Show("Simulación finalizada.");
         }
     }
 }
