@@ -344,6 +344,7 @@
             btnReporteBombaMenosUsada.TabIndex = 7;
             btnReporteBombaMenosUsada.Text = "Bomba menos usada";
             btnReporteBombaMenosUsada.UseVisualStyleBackColor = true;
+            btnReporteBombaMenosUsada.Click += btnReporteBombaMenosUsada_Click;
             // 
             // btnReporteBombaMasUsada
             // 
@@ -353,6 +354,7 @@
             btnReporteBombaMasUsada.TabIndex = 6;
             btnReporteBombaMasUsada.Text = "Bomba más usada";
             btnReporteBombaMasUsada.UseVisualStyleBackColor = true;
+            btnReporteBombaMasUsada.Click += btnReporteBombaMasUsada_Click;
             // 
             // btnReporteTanqueLleno
             // 
@@ -362,6 +364,7 @@
             btnReporteTanqueLleno.TabIndex = 5;
             btnReporteTanqueLleno.Text = "Reporte tanque lleno";
             btnReporteTanqueLleno.UseVisualStyleBackColor = true;
+            btnReporteTanqueLleno.Click += btnReporteTanqueLleno_Click;
             // 
             // btnReportePrepago
             // 
@@ -371,6 +374,7 @@
             btnReportePrepago.TabIndex = 3;
             btnReportePrepago.Text = "Reporte prepago";
             btnReportePrepago.UseVisualStyleBackColor = true;
+            btnReportePrepago.Click += btnReportePrepago_Click;
             // 
             // btnReporteDiario
             // 
@@ -380,6 +384,7 @@
             btnReporteDiario.TabIndex = 2;
             btnReporteDiario.Text = "Reporte diario";
             btnReporteDiario.UseVisualStyleBackColor = true;
+            btnReporteDiario.Click += btnReporteDiario_Click;
             // 
             // dgvReportes
             // 
