@@ -199,6 +199,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
 
 
+
                 abastecimientoActual.Id = cliente.NIT;
             }
             else if (rdbTanqueLleno.Checked)
