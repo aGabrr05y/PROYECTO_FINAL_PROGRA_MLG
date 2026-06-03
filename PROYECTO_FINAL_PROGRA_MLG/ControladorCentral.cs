@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
@@ -9,6 +8,12 @@ namespace PROYECTO_FINAL_PROGRA_MLG
     {
         public Bomba[] Bombas = { new Bomba { Numero = 1 }, new Bomba { Numero = 2 } };
         public RegistroAbastecimientos Registro = new();
+
+        public ControladorCentral()
+        {
+            // Cargar abastecimientos guardados al iniciar la aplicación
+            Registro.CargarDesdeArchivo();
+        }
 
         public string EnviarOrdenJSON(Abastecimiento ab)
         {
@@ -33,13 +38,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             int bomba = data.bomba;
             double litros = data.litrosServidos;
 
-            var ultimo = Registro.Lista.LastOrDefault(x => x.NumeroBomba == bomba);
-
-            if (ultimo == null)
-            {
-
-                return;
-            }
+            var ultimo = Registro.Lista.Last(x => x.NumeroBomba == bomba);
 
             ultimo.LitrosServidos = litros;
             ultimo.Procesar();

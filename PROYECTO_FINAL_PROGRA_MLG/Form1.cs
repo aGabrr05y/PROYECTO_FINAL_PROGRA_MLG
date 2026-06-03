@@ -14,6 +14,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         public Form1()
         {
             InitializeComponent();
+            this.FormClosing += Form1_FormClosing;
             CargarClientes();
             lblPrecioActual.Text = "Q37.35"; // Precio fijo
         }
@@ -62,8 +63,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 return;
             }
 
-            // Asegurar que el abastecimiento esté procesado (calcular litros / total) antes de guardar
-            abastecimientoActual.Procesar();
             controlador.Registro.Agregar(abastecimientoActual);
 
             // Liberar bomba
@@ -162,13 +161,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 return;
             }
 
-            // No permitir iniciar si no se ha seleccionado tipo de abastecimiento
-            if (!rdbPrepago.Checked && !rdbTanqueLleno.Checked)
-            {
-                MessageBox.Show("Seleccione un tipo de abastecimiento (Prepago o Tanque lleno).");
-                return;
-            }
-
             // Obtener cliente
             Cliente cliente;
 
@@ -202,6 +194,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                     NumeroBomba = numeroBomba,
                     MontoPagado = monto
                 };
+                // Asignar Id del abastecimiento al NIT del cliente
+                abastecimientoActual.Id = cliente.NIT;
             }
             else if (rdbTanqueLleno.Checked)
             {
@@ -210,6 +204,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                     Cliente = cliente,
                     NumeroBomba = numeroBomba
                 };
+                // Asignar Id del abastecimiento al NIT del cliente
+                abastecimientoActual.Id = cliente.NIT;
             }
             else
             {
@@ -289,7 +285,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             dgvReportes.DataSource = null;
             dgvReportes.DataSource = lista;
-            AplicarFormatoDgvReportes();
         }
 
         private void btnReportePrepago_Click(object sender, EventArgs e)
@@ -298,7 +293,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             dgvReportes.DataSource = null;
             dgvReportes.DataSource = lista;
-            AplicarFormatoDgvReportes();
         }
 
         private void btnReporteTanqueLleno_Click(object sender, EventArgs e)
@@ -307,23 +301,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             dgvReportes.DataSource = null;
             dgvReportes.DataSource = lista;
-            AplicarFormatoDgvReportes();
-        }
-
-        // Formatea columnas del DataGridView de reportes
-        void AplicarFormatoDgvReportes()
-        {
-            try
-            {
-                if (dgvReportes.Columns.Contains("LitrosServidos"))
-                {
-                    dgvReportes.Columns["LitrosServidos"].DefaultCellStyle.Format = "N3"; // 3 decimales
-                }
-            }
-            catch
-            {
-                // No hacer nada si ocurre algún error en el formateo
-            }
         }
 
         private void btnReporteBombaMasUsada_Click(object sender, EventArgs e)
@@ -355,6 +332,30 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         private void txtNIT_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form1_FormClosing(object? sender, System.Windows.Forms.FormClosingEventArgs e)
+        {
+            // Si hay un abastecimiento en curso, procesarlo y guardarlo antes de cerrar
+            if (abastecimientoActual != null)
+            {
+                abastecimientoActual.LitrosServidos = Math.Round(litrosSimulados, 2);
+                abastecimientoActual.Procesar();
+
+                controlador.Registro.Agregar(abastecimientoActual);
+
+                // Liberar la bomba si es posible
+                try
+                {
+                    controlador.Bombas[abastecimientoActual.NumeroBomba - 1].Finalizar();
+                }
+                catch { }
+
+                abastecimientoActual = null;
+            }
+
+            // Asegurar que el registro esté guardado
+            controlador.Registro.GuardarEnArchivo();
         }
     }
 }

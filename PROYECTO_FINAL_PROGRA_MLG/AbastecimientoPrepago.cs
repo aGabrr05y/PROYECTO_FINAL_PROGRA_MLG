@@ -10,8 +10,9 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         public override void Procesar()
         {
-            LitrosServidos = MontoPagado / PrecioPorLitro;
-            TotalCobrado = MontoPagado;
+            // Calcular y redondear a 2 decimales
+            LitrosServidos = Math.Round(MontoPagado / PrecioPorLitro, 2);
+            TotalCobrado = Math.Round(MontoPagado, 2);
         }
     }
 }

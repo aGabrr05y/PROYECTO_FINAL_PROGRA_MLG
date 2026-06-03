@@ -192,7 +192,7 @@
             lblTotalCobrar.AutoSize = true;
             lblTotalCobrar.Location = new Point(114, 215);
             lblTotalCobrar.Name = "lblTotalCobrar";
-            lblTotalCobrar.Size = new Size(28, 15);
+            lblTotalCobrar.Size = new Size(34, 15);
             lblTotalCobrar.TabIndex = 15;
             lblTotalCobrar.Text = "0.000";
             // 
@@ -210,7 +210,7 @@
             lblLitrosServidos.AutoSize = true;
             lblLitrosServidos.Location = new Point(100, 190);
             lblLitrosServidos.Name = "lblLitrosServidos";
-            lblLitrosServidos.Size = new Size(28, 15);
+            lblLitrosServidos.Size = new Size(34, 15);
             lblLitrosServidos.TabIndex = 13;
             lblLitrosServidos.Text = "0.000";
             // 
@@ -317,7 +317,7 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(884, 403);
+            tabPage1.Size = new Size(884, 490);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
@@ -404,7 +404,7 @@
             dgvReportes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvReportes.Location = new Point(81, 169);
             dgvReportes.Name = "dgvReportes";
-            dgvReportes.Size = new Size(790, 301);
+            dgvReportes.Size = new Size(728, 301);
             dgvReportes.TabIndex = 1;
             // 
             // grpSimulacion
