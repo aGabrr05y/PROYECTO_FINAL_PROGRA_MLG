@@ -162,6 +162,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             }
 
             listaClientes.RemoveAll(x => x.NIT == c.NIT);
+
             listaClientes.Add(c);
 
             GuardarClientes();
