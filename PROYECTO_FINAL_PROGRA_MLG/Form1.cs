@@ -197,6 +197,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 // Asignar Id del abastecimiento al NIT del cliente
 
 
+
                 abastecimientoActual.Id = cliente.NIT;
             }
             else if (rdbTanqueLleno.Checked)
