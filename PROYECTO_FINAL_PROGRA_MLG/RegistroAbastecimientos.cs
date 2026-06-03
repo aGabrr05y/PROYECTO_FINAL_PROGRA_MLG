@@ -31,16 +31,27 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         public void GuardarEnArchivo()
         {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings
+            {
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto
+            };
+
             File.WriteAllText("abastecimientos.json",
-                Newtonsoft.Json.JsonConvert.SerializeObject(Lista, Newtonsoft.Json.Formatting.Indented));
+                Newtonsoft.Json.JsonConvert.SerializeObject(Lista, Newtonsoft.Json.Formatting.Indented, settings));
         }
 
         public void CargarDesdeArchivo()
         {
             if (File.Exists("abastecimientos.json"))
             {
+                var settings = new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto
+                };
+
                 string json = File.ReadAllText("abastecimientos.json");
-                Lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Abastecimiento>>(json);
+                Lista = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Abastecimiento>>(json, settings)
+                        ?? new List<Abastecimiento>();
             }
         }
 

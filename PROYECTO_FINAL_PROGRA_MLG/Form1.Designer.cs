@@ -194,7 +194,7 @@
             lblTotalCobrar.Name = "lblTotalCobrar";
             lblTotalCobrar.Size = new Size(28, 15);
             lblTotalCobrar.TabIndex = 15;
-            lblTotalCobrar.Text = "0.00";
+            lblTotalCobrar.Text = "0.000";
             // 
             // label5
             // 
@@ -212,7 +212,7 @@
             lblLitrosServidos.Name = "lblLitrosServidos";
             lblLitrosServidos.Size = new Size(28, 15);
             lblLitrosServidos.TabIndex = 13;
-            lblLitrosServidos.Text = "0.00";
+            lblLitrosServidos.Text = "0.000";
             // 
             // label4
             // 
