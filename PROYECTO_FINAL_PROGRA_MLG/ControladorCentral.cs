@@ -33,13 +33,11 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             int bomba = data.bomba;
             double litros = data.litrosServidos;
 
-            // Use LastOrDefault and handle missing entry to avoid InvalidOperationException
             var ultimo = Registro.Lista.LastOrDefault(x => x.NumeroBomba == bomba);
 
             if (ultimo == null)
             {
-                // No matching abastecimiento found for the reported pump.
-                // Gracefully ignore or log the event. For now, do nothing.
+
                 return;
             }
 
