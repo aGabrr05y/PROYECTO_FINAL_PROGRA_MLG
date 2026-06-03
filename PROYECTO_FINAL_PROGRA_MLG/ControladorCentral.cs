@@ -17,15 +17,26 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         public string EnviarOrdenJSON(Abastecimiento ab)
         {
-            var json = new
+            if (ab is AbastecimientoPrepago prepago)
             {
-                bomba = ab.NumeroBomba,
-                tipo = ab is AbastecimientoPrepago ? "prepago" : "tanqueLleno",
-                monto = (ab as AbastecimientoPrepago)?.MontoPagado,
-                precioPorLitro = ab.PrecioPorLitro
-            };
+                var obj = new
+                {
+                    bomba = ab.NumeroBomba,
+                    monto = prepago.MontoPagado
+                };
 
-            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
+                return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            }
+            else
+            {
+                var obj = new
+                {
+                    bomba = ab.NumeroBomba,
+                    tanqueLleno = true
+                };
+
+                return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            }
 
 
 

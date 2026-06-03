@@ -1,10 +1,12 @@
 using Newtonsoft.Json;
+using System.IO.Ports;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
     public partial class Form1 : Form
     {
         ControladorCentral controlador = new ControladorCentral();
+        private SerialPort serialArduino;
         List<Cliente> listaClientes = new List<Cliente>();
         string rutaClientes = "clientes.json";
 
@@ -16,7 +18,29 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             InitializeComponent();
             this.FormClosing += Form1_FormClosing;
             CargarClientes();
+            InicializarSerial();
             lblPrecioActual.Text = "Q37.35"; // Precio fijo
+        }
+
+        void InicializarSerial()
+        {
+            try
+            {
+                serialArduino = new SerialPort();
+
+                var ports = SerialPort.GetPortNames();
+                serialArduino.PortName = ports.Length > 0 ? ports[0] : "COM3";
+                serialArduino.BaudRate = 9600;
+                serialArduino.NewLine = "\n";
+                serialArduino.DataReceived += serialArduino_DataReceived;
+
+                serialArduino.Open();
+            }
+            catch (Exception ex)
+            {
+                // Si no se puede abrir el puerto, continuar en modo simulado
+                MessageBox.Show($"No se pudo abrir el puerto serie: {ex.Message}");
+            }
         }
 
         void GuardarClientes()
@@ -34,26 +58,63 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             }
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
+        // Métodos requeridos por el Designer (stubs para evitar errores de compilación)
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+            // Si se marca Consumidor Final, completar los campos y deshabilitarlos
+            try
+            {
+                if (chkConsumidorFinal.Checked)
+                {
+                    txtNombre.Text = "Consumidor Final";
+                    txtNIT.Text = "CF";
+                    txtNombre.Enabled = false;
+                    txtNIT.Enabled = false;
+                }
+                else
+                {
+                    txtNombre.Enabled = true;
+                    txtNIT.Enabled = true;
+                }
+            }
+            catch { }
+        }
 
+        private void txtNIT_TextChanged(object sender, EventArgs e)
+        {
+            // No-op: el botón 'Actualizar' carga el cliente. Este handler existe por el Designer.
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
-
+            // No-op: handler vacío requerido por Designer.
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void txtNombre_TextChanged(object sender, EventArgs e)
         {
+            // No-op: handler vacío requerido por Designer.
+        }
 
+        private void label3_Click(object sender, EventArgs e)
+        {
+            // No-op
         }
 
         private void lblPrecioLitro_Click(object sender, EventArgs e)
         {
-
+            // No-op
         }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+            // No-op
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+            // No-op
+        }
+
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -63,9 +124,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 return;
             }
 
-            controlador.Registro.Agregar(abastecimientoActual);
-
-            // Liberar bomba
+            // Liberar bomba (el registro ya fue agregado al iniciar el abastecimiento)
             controlador.Bombas[abastecimientoActual.NumeroBomba - 1].Finalizar();
 
             MessageBox.Show("Abastecimiento guardado.");
@@ -77,15 +136,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             txtMonto.Clear();
         }
 
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
 
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnGuardarCliente_Click(object sender, EventArgs e)
         {
@@ -222,6 +273,20 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 return;
             }
 
+            // Agregar al registro para que la respuesta del Arduino pueda actualizarlo
+            controlador.Registro.Agregar(abastecimientoActual);
+
+            // Enviar orden JSON al Arduino (si está disponible)
+            try
+            {
+                string json = controlador.EnviarOrdenJSON(abastecimientoActual);
+                if (serialArduino != null && serialArduino.IsOpen)
+                {
+                    serialArduino.WriteLine(json);
+                }
+            }
+            catch { }
+
             bomba.Iniciar();
             litrosSimulados = 0;
             lblLitrosServidos.Text = "0.00";
@@ -328,20 +393,26 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             dgvReportes.DataSource = new List<Bomba> { bomba };
         }
 
-        private void tabPage2_Click(object sender, EventArgs e)
+        private void serialArduino_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            try
+            {
+                string json = serialArduino.ReadLine();
 
+                this.Invoke(new Action(() =>
+                {
+                    controlador.RecibirRespuestaJSON(json);
+
+                    if (abastecimientoActual != null)
+                    {
+                        lblLitrosServidos.Text = abastecimientoActual.LitrosServidos.ToString("0.00");
+                        lblTotalCobrar.Text = abastecimientoActual.TotalCobrado.ToString("0.00");
+                    }
+                }));
+            }
+            catch { }
         }
 
-        private void txtNombre_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtNIT_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void Form1_FormClosing(object? sender, System.Windows.Forms.FormClosingEventArgs e)
         {
@@ -351,7 +422,10 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 abastecimientoActual.LitrosServidos = Math.Round(litrosSimulados, 2);
                 abastecimientoActual.Procesar();
 
-                controlador.Registro.Agregar(abastecimientoActual);
+                if (!controlador.Registro.Lista.Contains(abastecimientoActual))
+                {
+                    controlador.Registro.Agregar(abastecimientoActual);
+                }
 
                 // Liberar la bomba si es posible
                 try
@@ -365,6 +439,18 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             // Asegurar que el registro esté guardado
             controlador.Registro.GuardarEnArchivo();
+
+            // Cerrar puerto serie si está abierto
+            try
+            {
+                if (serialArduino != null)
+                {
+                    if (serialArduino.IsOpen) serialArduino.Close();
+                    serialArduino.Dispose();
+                    serialArduino = null;
+                }
+            }
+            catch { }
         }
     }
 }
