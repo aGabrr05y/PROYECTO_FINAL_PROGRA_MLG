@@ -162,6 +162,13 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 return;
             }
 
+            // No permitir iniciar si no se ha seleccionado tipo de abastecimiento
+            if (!rdbPrepago.Checked && !rdbTanqueLleno.Checked)
+            {
+                MessageBox.Show("Seleccione un tipo de abastecimiento (Prepago o Tanque lleno).");
+                return;
+            }
+
             // Obtener cliente
             Cliente cliente;
 
@@ -282,6 +289,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             dgvReportes.DataSource = null;
             dgvReportes.DataSource = lista;
+            AplicarFormatoDgvReportes();
         }
 
         private void btnReportePrepago_Click(object sender, EventArgs e)
@@ -290,6 +298,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             dgvReportes.DataSource = null;
             dgvReportes.DataSource = lista;
+            AplicarFormatoDgvReportes();
         }
 
         private void btnReporteTanqueLleno_Click(object sender, EventArgs e)
@@ -298,6 +307,23 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             dgvReportes.DataSource = null;
             dgvReportes.DataSource = lista;
+            AplicarFormatoDgvReportes();
+        }
+
+        // Formatea columnas del DataGridView de reportes
+        void AplicarFormatoDgvReportes()
+        {
+            try
+            {
+                if (dgvReportes.Columns.Contains("LitrosServidos"))
+                {
+                    dgvReportes.Columns["LitrosServidos"].DefaultCellStyle.Format = "N3"; // 3 decimales
+                }
+            }
+            catch
+            {
+                // No hacer nada si ocurre algún error en el formateo
+            }
         }
 
         private void btnReporteBombaMasUsada_Click(object sender, EventArgs e)
