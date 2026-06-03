@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
@@ -32,7 +33,15 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             int bomba = data.bomba;
             double litros = data.litrosServidos;
 
-            var ultimo = Registro.Lista.Last(x => x.NumeroBomba == bomba);
+            // Use LastOrDefault and handle missing entry to avoid InvalidOperationException
+            var ultimo = Registro.Lista.LastOrDefault(x => x.NumeroBomba == bomba);
+
+            if (ultimo == null)
+            {
+                // No matching abastecimiento found for the reported pump.
+                // Gracefully ignore or log the event. For now, do nothing.
+                return;
+            }
 
             ultimo.LitrosServidos = litros;
             ultimo.Procesar();
