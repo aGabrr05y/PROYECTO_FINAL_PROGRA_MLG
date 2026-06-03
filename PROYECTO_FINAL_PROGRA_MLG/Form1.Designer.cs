@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox1 = new GroupBox();
+            grpCliente = new GroupBox();
             btnGuardarCliente = new Button();
             btnActualizarCliente = new Button();
             chkConsumidorFinal = new CheckBox();
@@ -53,6 +53,7 @@
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
+            dtpFechaReporte = new DateTimePicker();
             btnReporteBombaMenosUsada = new Button();
             btnReporteBombaMasUsada = new Button();
             btnReporteTanqueLleno = new Button();
@@ -63,8 +64,7 @@
             btnEnviarJsonSimulado = new Button();
             btnSimularFinalizar = new Button();
             btnSimularMasLitros = new Button();
-            dtpFechaReporte = new DateTimePicker();
-            groupBox1.SuspendLayout();
+            grpCliente.SuspendLayout();
             grpAbastecimiento.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -73,21 +73,21 @@
             grpSimulacion.SuspendLayout();
             SuspendLayout();
             // 
-            // groupBox1
+            // grpCliente
             // 
-            groupBox1.Controls.Add(btnGuardarCliente);
-            groupBox1.Controls.Add(btnActualizarCliente);
-            groupBox1.Controls.Add(chkConsumidorFinal);
-            groupBox1.Controls.Add(txtNIT);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(txtNombre);
-            groupBox1.Controls.Add(label1);
-            groupBox1.Location = new Point(12, 84);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(311, 176);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Datos de Cliente";
+            grpCliente.Controls.Add(btnGuardarCliente);
+            grpCliente.Controls.Add(btnActualizarCliente);
+            grpCliente.Controls.Add(chkConsumidorFinal);
+            grpCliente.Controls.Add(txtNIT);
+            grpCliente.Controls.Add(label2);
+            grpCliente.Controls.Add(txtNombre);
+            grpCliente.Controls.Add(label1);
+            grpCliente.Location = new Point(12, 84);
+            grpCliente.Name = "grpCliente";
+            grpCliente.Size = new Size(311, 176);
+            grpCliente.TabIndex = 0;
+            grpCliente.TabStop = false;
+            grpCliente.Text = "Datos de Cliente";
             // 
             // btnGuardarCliente
             // 
@@ -126,6 +126,7 @@
             txtNIT.Name = "txtNIT";
             txtNIT.Size = new Size(159, 23);
             txtNIT.TabIndex = 3;
+            txtNIT.TextChanged += txtNIT_TextChanged;
             // 
             // label2
             // 
@@ -143,6 +144,7 @@
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(159, 23);
             txtNombre.TabIndex = 1;
+            txtNombre.TextChanged += txtNombre_TextChanged;
             // 
             // label1
             // 
@@ -305,12 +307,12 @@
             tabControl1.Location = new Point(-4, 12);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(892, 431);
+            tabControl1.Size = new Size(892, 518);
             tabControl1.TabIndex = 2;
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(groupBox1);
+            tabPage1.Controls.Add(grpCliente);
             tabPage1.Controls.Add(grpAbastecimiento);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
@@ -333,15 +335,23 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(884, 403);
+            tabPage2.Size = new Size(884, 490);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             tabPage2.Click += tabPage2_Click;
             // 
+            // dtpFechaReporte
+            // 
+            dtpFechaReporte.Format = DateTimePickerFormat.Short;
+            dtpFechaReporte.Location = new Point(147, 76);
+            dtpFechaReporte.Name = "dtpFechaReporte";
+            dtpFechaReporte.Size = new Size(142, 23);
+            dtpFechaReporte.TabIndex = 8;
+            // 
             // btnReporteBombaMenosUsada
             // 
-            btnReporteBombaMenosUsada.Location = new Point(729, 263);
+            btnReporteBombaMenosUsada.Location = new Point(533, 139);
             btnReporteBombaMenosUsada.Name = "btnReporteBombaMenosUsada";
             btnReporteBombaMenosUsada.Size = new Size(142, 28);
             btnReporteBombaMenosUsada.TabIndex = 7;
@@ -351,7 +361,7 @@
             // 
             // btnReporteBombaMasUsada
             // 
-            btnReporteBombaMasUsada.Location = new Point(729, 229);
+            btnReporteBombaMasUsada.Location = new Point(533, 105);
             btnReporteBombaMasUsada.Name = "btnReporteBombaMasUsada";
             btnReporteBombaMasUsada.Size = new Size(142, 28);
             btnReporteBombaMasUsada.TabIndex = 6;
@@ -361,7 +371,7 @@
             // 
             // btnReporteTanqueLleno
             // 
-            btnReporteTanqueLleno.Location = new Point(729, 200);
+            btnReporteTanqueLleno.Location = new Point(533, 76);
             btnReporteTanqueLleno.Name = "btnReporteTanqueLleno";
             btnReporteTanqueLleno.Size = new Size(142, 23);
             btnReporteTanqueLleno.TabIndex = 5;
@@ -371,7 +381,7 @@
             // 
             // btnReportePrepago
             // 
-            btnReportePrepago.Location = new Point(729, 169);
+            btnReportePrepago.Location = new Point(147, 138);
             btnReportePrepago.Name = "btnReportePrepago";
             btnReportePrepago.Size = new Size(142, 25);
             btnReportePrepago.TabIndex = 3;
@@ -381,7 +391,7 @@
             // 
             // btnReporteDiario
             // 
-            btnReporteDiario.Location = new Point(729, 136);
+            btnReporteDiario.Location = new Point(147, 105);
             btnReporteDiario.Name = "btnReporteDiario";
             btnReporteDiario.Size = new Size(142, 27);
             btnReporteDiario.TabIndex = 2;
@@ -392,9 +402,9 @@
             // dgvReportes
             // 
             dgvReportes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvReportes.Location = new Point(93, 67);
+            dgvReportes.Location = new Point(81, 169);
             dgvReportes.Name = "dgvReportes";
-            dgvReportes.Size = new Size(613, 301);
+            dgvReportes.Size = new Size(790, 301);
             dgvReportes.TabIndex = 1;
             // 
             // grpSimulacion
@@ -440,14 +450,6 @@
             btnSimularMasLitros.UseVisualStyleBackColor = true;
             btnSimularMasLitros.Click += btnSimularMasLitros_Click;
             // 
-            // dtpFechaReporte
-            // 
-            dtpFechaReporte.Format = DateTimePickerFormat.Short;
-            dtpFechaReporte.Location = new Point(729, 81);
-            dtpFechaReporte.Name = "dtpFechaReporte";
-            dtpFechaReporte.Size = new Size(142, 23);
-            dtpFechaReporte.TabIndex = 8;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -456,8 +458,8 @@
             Controls.Add(tabControl1);
             Name = "Form1";
             Text = "Form1";
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            grpCliente.ResumeLayout(false);
+            grpCliente.PerformLayout();
             grpAbastecimiento.ResumeLayout(false);
             grpAbastecimiento.PerformLayout();
             tabControl1.ResumeLayout(false);
@@ -470,7 +472,7 @@
 
         #endregion
 
-        private GroupBox groupBox1;
+        private GroupBox grpCliente;
         private Label label2;
         private TextBox txtNombre;
         private Label label1;

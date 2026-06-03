@@ -14,7 +14,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         public Form1()
         {
             InitializeComponent();
-            InitializeComponent();
             CargarClientes();
             lblPrecioActual.Text = "Q37.35"; // Precio fijo
         }
@@ -63,6 +62,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 return;
             }
 
+            // Asegurar que el abastecimiento esté procesado (calcular litros / total) antes de guardar
+            abastecimientoActual.Procesar();
             controlador.Registro.Agregar(abastecimientoActual);
 
             // Liberar bomba
@@ -110,13 +111,13 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 c.ConsumidorFinal = false;
             }
 
-            // Si ya existe, lo reemplaza
             listaClientes.RemoveAll(x => x.NIT == c.NIT);
             listaClientes.Add(c);
 
             GuardarClientes();
 
             MessageBox.Show("Cliente guardado correctamente.");
+
         }
 
         private void btnActualizarCliente_Click(object sender, EventArgs e)
@@ -316,6 +317,16 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         }
 
         private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtNIT_TextChanged(object sender, EventArgs e)
         {
 
         }
