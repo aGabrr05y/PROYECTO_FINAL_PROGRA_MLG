@@ -172,6 +172,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         }
         
+
+
         private void btnActualizarCliente_Click(object sender, EventArgs e)
         {
             string nit = txtNIT.Text;
