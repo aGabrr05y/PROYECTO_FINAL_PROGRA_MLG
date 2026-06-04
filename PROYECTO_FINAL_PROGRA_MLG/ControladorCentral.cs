@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -44,17 +45,31 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         public void RecibirRespuestaJSON(string json)
         {
-            dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            try
+            {
+                var j = Newtonsoft.Json.Linq.JObject.Parse(json);
 
-            int bomba = data.bomba;
-            double litros = data.litrosServidos;
+                int bomba = j.Value<int>("bomba");
 
-            var ultimo = Registro.Lista.Last(x => x.NumeroBomba == bomba);
+                var ultimo = Registro.Lista.Last(x => x.NumeroBomba == bomba);
 
-            ultimo.LitrosServidos = litros;
-            ultimo.Procesar();
-
-            Registro.GuardarEnArchivo();
+                if (j.TryGetValue("litrosServidos", out var t) && t.Type != Newtonsoft.Json.Linq.JTokenType.Null)
+                {
+                    double litros = t.Value<double>();
+                    ultimo.LitrosServidos = litros;
+                    ultimo.Procesar();
+                    Registro.GuardarEnArchivo();
+                }
+                else
+                {
+                    // Mensaje sin litrosServidos (por ejemplo ACK): no actualizar.
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"RecibirRespuestaJSON error: {ex.Message}");
+                // Evitar que una excepción en parsing detenga el hilo de recepción.
+            }
         }
     }
 }

@@ -1,5 +1,8 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO.Ports;
+using System.Threading;
+using System.Diagnostics;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
@@ -7,10 +10,14 @@ namespace PROYECTO_FINAL_PROGRA_MLG
     {
         ControladorCentral controlador = new ControladorCentral();
         private SerialPort serialArduino;
+        private ManualResetEventSlim ackEvent = new ManualResetEventSlim(false);
+        private volatile bool ackReceived = false;
+        private volatile int lastAckBomba = 0;
+        private double lastAckLimite = 0.0;
         List<Cliente> listaClientes = new List<Cliente>();
         string rutaClientes = "clientes.json";
 
-        double litrosSimulados = 0.0; // Para pruebas sin Arduino
+        double litrosSimulados = 0.0;
 
 
         public Form1()
@@ -19,7 +26,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             this.FormClosing += Form1_FormClosing;
             CargarClientes();
             InicializarSerial();
-            lblPrecioActual.Text = "Q37.35"; // Precio fijo
+            lblPrecioActual.Text = "Q37.35";
         }
 
         void InicializarSerial()
@@ -29,12 +36,34 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 serialArduino = new SerialPort();
 
                 var ports = SerialPort.GetPortNames();
-                serialArduino.PortName = ports.Length > 0 ? ports[0] : "COM3";
+                // Preferir COM3 si existe (usuario indicó que el Arduino está en COM3)
+                if (ports != null && ports.Length > 0)
+                {
+                    string chosen = ports[0];
+                    for (int i = 0; i < ports.Length; i++)
+                    {
+                        if (ports[i].ToUpper() == "COM3") { chosen = ports[i]; break; }
+                    }
+                    serialArduino.PortName = chosen;
+                }
+                else
+                {
+                    serialArduino.PortName = "COM3"; // fallback
+                }
                 serialArduino.BaudRate = 9600;
                 serialArduino.NewLine = "\n";
                 serialArduino.DataReceived += serialArduino_DataReceived;
 
+                // Evitar reinicio automático en algunos adaptadores: deshabilitar DTR antes de abrir
+                serialArduino.DtrEnable = false;
                 serialArduino.Open();
+
+                // Dar tiempo al Arduino para reiniciarse/estabilizarse si ocurre
+                Thread.Sleep(1200);
+                try { serialArduino.DiscardInBuffer(); } catch { }
+                try { serialArduino.DiscardOutBuffer(); } catch { }
+                Debug.WriteLine($"Serial abierto en {serialArduino.PortName}");
+                MessageBox.Show($"Puerto serie abierto: {serialArduino.PortName}", "Puerto serie");
             }
             catch (Exception ex)
             {
@@ -82,7 +111,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         private void txtNIT_TextChanged(object sender, EventArgs e)
         {
-            // No-op: el botón 'Actualizar' carga el cliente. Este handler existe por el Designer.
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -107,12 +135,11 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         private void tabPage2_Click(object sender, EventArgs e)
         {
-            // No-op
         }
 
         private void groupBox2_Enter(object sender, EventArgs e)
         {
-            // No-op
+     
         }
 
 
@@ -284,12 +311,58 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             try
             {
                 string json = controlador.EnviarOrdenJSON(abastecimientoActual);
+
+                // Si el puerto no está inicializado o cerrado, intentar reabrir
+                if (serialArduino == null || !serialArduino.IsOpen)
+                {
+                    InicializarSerial();
+                    // pequeña espera para que el puerto se estabilice
+                    Thread.Sleep(100);
+                }
+
                 if (serialArduino != null && serialArduino.IsOpen)
                 {
-                    serialArduino.WriteLine(json);
+                    // Preparar espera de ACK
+                    ackEvent.Reset();
+                    ackReceived = false;
+                    try
+                    {
+                        Debug.WriteLine($"Enviando a {serialArduino.PortName}: {json}");
+                        serialArduino.WriteLine(json);
+                        MessageBox.Show($"Enviado al puerto {serialArduino.PortName}: {json}", "Depuración");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al escribir en el puerto {serialArduino.PortName}: {ex.Message}");
+                    }
+
+                    // Esperar ACK hasta 2s
+                    bool got = ackEvent.Wait(2000);
+                    if (!got)
+                    {
+                        MessageBox.Show("No se recibió confirmación del Arduino (timeout).");
+                    }
+                    else
+                    {
+                        if (ackReceived && lastAckBomba == abastecimientoActual.NumeroBomba)
+                        {
+                            // ACK válido recibido
+                        }
+                        else
+                        {
+                            MessageBox.Show("Confirmación recibida pero no coincide con la bomba esperada.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Puerto serie no disponible. Orden no enviada.");
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error enviando orden por serie: {ex.Message}");
+            }
 
             bomba.Iniciar();
             litrosSimulados = 0;
@@ -299,61 +372,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             MessageBox.Show("Abastecimiento iniciado.");
         }
 
-        private void btnSimularMasLitros_Click(object sender, EventArgs e)
-        {
-            litrosSimulados += 0.1;
-            lblLitrosServidos.Text = litrosSimulados.ToString("0.00");
-
-            if (abastecimientoActual is AbastecimientoPrepago prepago)
-            {
-                double litrosMax = prepago.MontoPagado / 37.35;
-
-                if (litrosSimulados >= litrosMax)
-                {
-                    litrosSimulados = litrosMax;
-                    lblLitrosServidos.Text = litrosSimulados.ToString("0.00");
-                    MessageBox.Show("Prepago completado.");
-                }
-            }
-        }
-
-        private void btnSimularFinalizar_Click(object sender, EventArgs e)
-        {
-            if (abastecimientoActual == null)
-            {
-                MessageBox.Show("No hay abastecimiento en curso.");
-                return;
-            }
-
-            abastecimientoActual.LitrosServidos = litrosSimulados;
-            abastecimientoActual.Procesar();
-
-            lblTotalCobrar.Text = abastecimientoActual.TotalCobrado.ToString("0.00");
-
-            MessageBox.Show("Simulación finalizada.");
-        }
-
-        private void btnEnviarJsonSimulado_Click(object sender, EventArgs e)
-        {
-            if (abastecimientoActual == null)
-            {
-                MessageBox.Show("No hay abastecimiento activo.");
-                return;
-            }
-
-            var json = $@"
-    {{
-        ""bomba"": {abastecimientoActual.NumeroBomba},
-        ""litrosServidos"": {litrosSimulados.ToString("0.00")},
-        ""finalizado"": true
-    }}";
-
-            controlador.RecibirRespuestaJSON(json);
-
-            lblTotalCobrar.Text = abastecimientoActual.TotalCobrado.ToString("0.00");
-
-            MessageBox.Show("JSON simulado enviado.");
-        }
 
         private void btnReporteDiario_Click(object sender, EventArgs e)
         {
@@ -402,9 +420,27 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             try
             {
                 string json = serialArduino.ReadLine();
-
+                // Procesar en hilo UI via Invoke
                 this.Invoke(new Action(() =>
                 {
+                    // Intentar parsear ACK primero
+                    try
+                    {
+                        var j = JObject.Parse(json);
+                        if (j["ok"] != null)
+                        {
+                            bool ok = j.Value<bool>("ok");
+                            if (ok)
+                            {
+                                lastAckBomba = j.Value<int?>("bomba") ?? 0;
+                                lastAckLimite = j.Value<double?>("limiteLitros") ?? 0.0;
+                                ackReceived = true;
+                                ackEvent.Set();
+                            }
+                        }
+                    }
+                    catch { }
+
                     controlador.RecibirRespuestaJSON(json);
 
                     if (abastecimientoActual != null)
@@ -455,6 +491,11 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 }
             }
             catch { }
+        }
+
+        private void dtpFechaReporte_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
