@@ -310,11 +310,6 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 }
                 catch (Exception ex) { MessageBox.Show($"Error al escribir en puerto: {ex.Message}"); }
 
-                bool got = ackEvent.Wait(2000);
-                if (!got)
-                    MessageBox.Show("No se recibió confirmación del Arduino (timeout).");
-                else if (!ackReceived || lastAckBomba != abastecimientoActual.NumeroBomba)
-                    MessageBox.Show("Confirmación no coincide con la bomba esperada.");
             }
             else
                 MessageBox.Show("Puerto serie no disponible. Orden no enviada.");
@@ -429,6 +424,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                             // LitrosServidos ya fue convertido a escala app por RecibirRespuestaJSON
                             lblLitrosServidos.Text = abastecimientoActual.LitrosServidos.ToString("0.00");
                             lblTotalCobrar.Text = abastecimientoActual.TotalCobrado.ToString("0.00");
+                            double totalTiempoReal = abastecimientoActual.LitrosServidos * abastecimientoActual.PrecioPorLitro;
+
                         }
 
                         if (j2.TryGetValue("finalizado", out var tf) && tf.Type == JTokenType.Boolean && tf.Value<bool>())
@@ -508,11 +505,10 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                     MessageBox.Show("No hay un abastecimiento en curso.");
                     return;
                 }
-                // Marcar como null inmediatamente para evitar race condition
                 abastecimientoActual = null;
             }
 
-            // Enviar comando parar al Arduino (sin bloquear el hilo UI con Wait)
+            // Enviar comando parar al Arduino
             if (serialArduino != null && serialArduino.IsOpen)
             {
                 try
@@ -526,21 +522,49 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 }
             }
 
-            // Procesar y cobrar localmente sin esperar respuesta del Arduino
+            // AGREGA ESTO: marcar como detenido manualmente si es prepago
+            if (aDetener is AbastecimientoPrepago prepago)
+            {
+                prepago.DetenidoManualmente = true;
+            }
+
+            // Procesar con la lógica correcta según el tipo
             aDetener.Procesar();
             controlador.Bombas[aDetener.NumeroBomba - 1].Finalizar();
-
             abastecimientoPendienteCobro = aDetener;
 
             lblLitrosServidos.Text = aDetener.LitrosServidos.ToString("0.00");
             lblTotalCobrar.Text = aDetener.TotalCobrado.ToString("0.00");
 
-            MessageBox.Show(
-                $"Abastecimiento detenido.\n" +
-                $"Litros: {aDetener.LitrosServidos:0.00}\n" +
-                $"Total: Q{aDetener.TotalCobrado:0.00}\n" +
-                $"Presione Cobrar para finalizar.",
-                "Detenido");
+            // CAMBIA el MessageBox para mostrar la información correcta:
+            if (aDetener is AbastecimientoPrepago prepagoDet)
+            {
+                double montoOriginal = prepagoDet.MontoPagado;
+                double montoACobrar = aDetener.TotalCobrado;
+                double litrosServidos = aDetener.LitrosServidos;
+                double reembolso = Math.Round(montoOriginal - montoACobrar, 2);
+
+                MessageBox.Show(
+                    $"Abastecimiento detenido manualmente.\n\n" +
+                    $"Cliente: {aDetener.Cliente?.Nombre}\n" +
+                    $"Monto ingresado originalmente: Q{montoOriginal:0.00}\n" +
+                    $"Litros consumidos: {litrosServidos:0.00} L\n" +
+                    $"Monto a cobrar (por lo consumido): Q{montoACobrar:0.00}\n" +
+                    $"Diferencia a devolver al cliente: Q{reembolso:0.00}\n\n" +
+                    $"Presione Cobrar para finalizar.",
+                    "Servicio Detenido");
+            }
+            else
+            {
+                // Tanque lleno detenido: cobrar por lo que salió
+                MessageBox.Show(
+                    $"Abastecimiento detenido.\n\n" +
+                    $"Cliente: {aDetener.Cliente?.Nombre}\n" +
+                    $"Litros consumidos: {aDetener.LitrosServidos:0.00} L\n" +
+                    $"Total a cobrar: Q{aDetener.TotalCobrado:0.00}\n\n" +
+                    $"Presione Cobrar para finalizar.",
+                    "Servicio Detenido");
+            }
         }
 
         private void lblLitrosServidos_Click(object sender, EventArgs e)
