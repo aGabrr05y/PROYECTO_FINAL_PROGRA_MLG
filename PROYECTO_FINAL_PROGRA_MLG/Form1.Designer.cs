@@ -37,6 +37,7 @@
             txtNombre = new TextBox();
             label1 = new Label();
             grpAbastecimiento = new GroupBox();
+            buttonDetener = new Button();
             btnCobrar = new Button();
             lblTotalCobrar = new Label();
             label5 = new Label();
@@ -152,6 +153,7 @@
             // 
             // grpAbastecimiento
             // 
+            grpAbastecimiento.Controls.Add(buttonDetener);
             grpAbastecimiento.Controls.Add(btnCobrar);
             grpAbastecimiento.Controls.Add(lblTotalCobrar);
             grpAbastecimiento.Controls.Add(label5);
@@ -167,10 +169,20 @@
             grpAbastecimiento.Controls.Add(cboBomba);
             grpAbastecimiento.Location = new Point(375, 55);
             grpAbastecimiento.Name = "grpAbastecimiento";
-            grpAbastecimiento.Size = new Size(397, 243);
+            grpAbastecimiento.Size = new Size(397, 309);
             grpAbastecimiento.TabIndex = 1;
             grpAbastecimiento.TabStop = false;
             grpAbastecimiento.Text = "Abastecimiento";
+            // 
+            // buttonDetener
+            // 
+            buttonDetener.Location = new Point(114, 260);
+            buttonDetener.Name = "buttonDetener";
+            buttonDetener.Size = new Size(146, 23);
+            buttonDetener.TabIndex = 17;
+            buttonDetener.Text = "Detener";
+            buttonDetener.UseVisualStyleBackColor = true;
+            buttonDetener.Click += buttonDetener_Click;
             // 
             // btnCobrar
             // 
@@ -208,6 +220,7 @@
             lblLitrosServidos.Size = new Size(34, 15);
             lblLitrosServidos.TabIndex = 13;
             lblLitrosServidos.Text = "0.000";
+            lblLitrosServidos.Click += lblLitrosServidos_Click;
             // 
             // label4
             // 
@@ -456,5 +469,6 @@
         private Button btnReporteTanqueLleno;
         private Button btnReporteBombaMenosUsada;
         private DateTimePicker dtpFechaReporte;
+        private Button buttonDetener;
     }
 }

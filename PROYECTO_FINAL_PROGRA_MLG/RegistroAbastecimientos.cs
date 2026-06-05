@@ -20,7 +20,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         {
             return Lista.Where(x => x.FechaHora.Date == fecha.Date).ToList();
         }
-
+        
         public List<Abastecimiento> ReportePrepago()
         {
             return Lista.Where(x => x is AbastecimientoPrepago).ToList();
