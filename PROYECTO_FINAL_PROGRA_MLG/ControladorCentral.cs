@@ -5,13 +5,14 @@ using System.Collections.Generic;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
+    // L:a comunicación entre la interfaz gráfica y el Arduino
     public class ControladorCentral
     {
         public Bomba[] Bombas = { new Bomba { Numero = 1 }, new Bomba { Numero = 2 } };
+
         public RegistroAbastecimientos Registro = new();
 
-        // Escala: 1 litro "app" = 0.05 litros reales (50 ml)
-        // Esto hace que Q37.35 → 1 litro app → 0.05 L reales enviados al Arduino
+        // G: Escala de conversión: 1 litro "app" = 0.05 litros reales 50 ml
         private const double ESCALA_LITROS = 0.05;
 
         public ControladorCentral()
@@ -19,10 +20,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             Registro.CargarDesdeArchivo();
         }
 
-        /// <summary>
-        /// Genera el JSON de orden para el Arduino.
-        /// limiteLitros es en litros "app"; este método lo escala a litros reales antes de enviar.
-        /// </summary>
+        // G: Genera JSON para enviar orden al Arduino
+        //    Convierte litros app → litros reales usando la escala
         public string EnviarOrdenJSON(Abastecimiento a, double limiteLitrosApp = 0.0)
         {
             var j = new JObject();
@@ -30,18 +29,18 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
             if (a is AbastecimientoTanqueLleno)
             {
-                j["tanqueLleno"] = true;
+                j["tanqueLleno"] = true; 
             }
             else if (limiteLitrosApp > 0.0)
             {
-                // Convertir litros app → litros reales para el Arduino
                 double litrosReales = limiteLitrosApp * ESCALA_LITROS;
-                j["limiteLitros"] = litrosReales;
+                j["limiteLitros"] = litrosReales; 
             }
 
             return j.ToString(Newtonsoft.Json.Formatting.None);
         }
 
+        // G: Genera comando JSON para calibrar el medidor de flujo del Arduino
         public string GenerarComandoCalibracion(double pulsosPorLitro)
         {
             var j = new JObject();
@@ -50,33 +49,32 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             return j.ToString(Newtonsoft.Json.Formatting.None);
         }
 
+        // G: Procesa las respuestas JSON que llegan desde el Arduino
+        //    Actualiza litros servidos, marca bombas como libres y guarda en archivo
         public void RecibirRespuestaJSON(string json)
         {
             try
             {
                 var j = JObject.Parse(json);
 
-                // Ignorar ACKs de calibración
+                // G: Ignorar mensajes de calibración y ACKs de inicio
                 if (j["cmd"] != null) return;
-
-                // Ignorar ACKs de inicio (tienen "ok":true)
                 if (j["ok"] != null) return;
 
                 int bomba = j.Value<int>("bomba");
-
                 var ultimo = Registro.Lista.LastOrDefault(x => x.NumeroBomba == bomba);
                 if (ultimo == null) return;
 
+                // G: Actualizar litros servidos convierte reales a app
                 if (j.TryGetValue("litrosServidos", out var t) && t.Type != JTokenType.Null)
                 {
                     double litrosReales = t.Value<double>();
-                    // Convertir litros reales → litros app para mostrar en UI
-                    // 0.05 reales = 1 litro app
                     double litrosApp = litrosReales / ESCALA_LITROS;
                     ultimo.LitrosServidos = litrosApp;
                     Registro.GuardarEnArchivo();
                 }
 
+                // G: Si el despacho finalizó, procesa el total, libera la bomba y guarda
                 if (j.TryGetValue("finalizado", out var tf) && tf.Type == JTokenType.Boolean && tf.Value<bool>())
                 {
                     try { ultimo.Procesar(); } catch { }
@@ -94,6 +92,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             }
         }
 
+        // G: Genera comando JSON para detener una bomba manualmente
         public string EnviarComandoParada(int bomba)
         {
             var j = new JObject();

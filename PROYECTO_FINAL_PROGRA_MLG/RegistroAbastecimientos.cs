@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace PROYECTO_FINAL_PROGRA_MLG
 {
+    // G: El almacenamiento, consulta y persistencia de todos los abastecimientos
     public class RegistroAbastecimientos
     {
         public List<Abastecimiento> Lista { get; set; } = new();
@@ -16,11 +17,12 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             GuardarEnArchivo();
         }
 
+        // G: Filtra los abastecimientos realizados en una fecha específica
         public List<Abastecimiento> FiltrarPorDia(DateTime fecha)
         {
             return Lista.Where(x => x.FechaHora.Date == fecha.Date).ToList();
         }
-        
+
         public List<Abastecimiento> ReportePrepago()
         {
             return Lista.Where(x => x is AbastecimientoPrepago).ToList();
@@ -31,17 +33,19 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             return Lista.Where(x => x is AbastecimientoTanqueLleno).ToList();
         }
 
+        // G: Guarda toda la lista en un archivo JSON
         public void GuardarEnArchivo()
         {
             var settings = new Newtonsoft.Json.JsonSerializerSettings
             {
-                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto 
             };
 
             File.WriteAllText("abastecimientos.json",
                 Newtonsoft.Json.JsonConvert.SerializeObject(Lista, Newtonsoft.Json.Formatting.Indented, settings));
         }
 
+        // G: Carga la lista desde el archivo JSON
         public void CargarDesdeArchivo()
         {
             if (File.Exists("abastecimientos.json"))
@@ -66,6 +70,5 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         {
             return bombas.OrderBy(b => b.VecesUsada).First();
         }
-
     }
 }

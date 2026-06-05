@@ -9,27 +9,35 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 {
     public partial class Form1 : Form
     {
+        //Variables de control y comunicación con Arduino
         ControladorCentral controlador = new ControladorCentral();
         private SerialPort serialArduino;
         private ManualResetEventSlim ackEvent = new ManualResetEventSlim(false);
         private volatile bool ackReceived = false;
         private volatile int lastAckBomba = 0;
         private double lastAckLimite = 0.0;
+
+        // M: Eventos para manejo de parada manual de bombas
         private ManualResetEventSlim stopEvent = new ManualResetEventSlim(false);
         private volatile bool stopReceived = false;
         private volatile int lastStopBomba = 0;
+
         List<Cliente> listaClientes = new List<Cliente>();
         string rutaClientes = "clientes.json";
-
         public Form1()
         {
+ 
             InitializeComponent();
             this.FormClosing += Form1_FormClosing;
+
+            // G: Cargo clientes guardados previamente y arranco comunicación
             CargarClientes();
             InicializarSerial();
+
             lblPrecioActual.Text = "Q37.35";
         }
-
+        //Lo usamos para comunicarnos con el Arduino, enviarle las órdenes de
+        //inicio de abastecimiento y recibir los datos de litros servidos en tiempo real.
         void InicializarSerial()
         {
             try
@@ -68,6 +76,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
             File.WriteAllText(rutaClientes, json);
         }
 
+
+        //L Leemos el JSON y cargamos los datos que tenga dentro
         void CargarClientes()
         {
             if (File.Exists(rutaClientes))
@@ -79,7 +89,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
 
 
-
+        // G: Manejo del checkbox de Consumidor Final
+        // Cuando se activa, deshabilito campos y asigno valores por defecto
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -113,22 +124,18 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         private void label2_Click(object sender, EventArgs e)
         {
-            // No-op: handler vacío requerido por Designer.
         }
 
         private void txtNombre_TextChanged(object sender, EventArgs e)
         {
-            // No-op: handler vacío requerido por Designer.
         }
 
         private void label3_Click(object sender, EventArgs e)
         {
-            // No-op
         }
 
         private void lblPrecioLitro_Click(object sender, EventArgs e)
         {
-            // No-op
         }
 
         private void tabPage2_Click(object sender, EventArgs e)
@@ -147,6 +154,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+
+
             Abastecimiento aCobrar;
             lock (_lockAbastecimiento)
             {
@@ -171,7 +180,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 $"Litros: {aCobrar.LitrosServidos:0.00}\n" +
                 $"Total: Q{aCobrar.TotalCobrado:0.00}",
                 "Cobro exitoso");
-
+            // Limpiar campos de la interfaz
             lblLitrosServidos.Text = "0.00";
             lblTotalCobrar.Text = "0.00";
             txtMonto.Clear();
@@ -185,6 +194,7 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         private void btnGuardarCliente_Click(object sender, EventArgs e)
         {
+            // Crear nuevo cliente con los datos del formulario
             Cliente c = new Cliente();
             if (chkConsumidorFinal.Checked)
             {
@@ -203,6 +213,8 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 c.NIT = txtNIT.Text;
                 c.ConsumidorFinal = false;
             }
+            // Reemplazar si ya existe cliente con el mismo NIT
+
             listaClientes.RemoveAll(x => x.NIT == c.NIT);
             listaClientes.Add(c);
             GuardarClientes();
@@ -216,9 +228,11 @@ namespace PROYECTO_FINAL_PROGRA_MLG
 
         private void btnActualizarCliente_Click(object sender, EventArgs e)
         {
+            // Buscar cliente por NIT
             string nit = txtNIT.Text;
             Cliente encontrado = listaClientes.FirstOrDefault(x => x.NIT == nit);
             if (encontrado == null) { MessageBox.Show("No existe un cliente con ese NIT."); return; }
+            // Cargar datos del cliente en el formulario
             txtNombre.Text = encontrado.Nombre;
             chkConsumidorFinal.Checked = encontrado.ConsumidorFinal;
             MessageBox.Show("Cliente cargado.");
@@ -237,26 +251,44 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         //Luego, al recibir datos del Arduino, se actualizan los litros servidos y total cobrado en la interfaz. Al finalizar el abastecimiento, se procesa y guarda el registro.
         private void btnIniciarAbastecimiento_Click(object sender, EventArgs e)
         {
-            if (cboBomba.SelectedIndex == -1) { MessageBox.Show("Seleccione una bomba."); return; }
+            // VALIDACIÓN 1: Verificar que se haya seleccionado una bomba
+            if (cboBomba.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione una bomba.");
+                return;
+            }
 
+            // Obtener número de bomba y verificar que no esté ocupada
             int numeroBomba = int.Parse(cboBomba.SelectedItem.ToString());
             Bomba bomba = controlador.Bombas[numeroBomba - 1];
 
-            if (bomba.Ocupada) { MessageBox.Show("La bomba está ocupada."); return; }
+            if (bomba.Ocupada)
+            {
+                MessageBox.Show("La bomba está ocupada.");
+                return;
+            }
 
+            // OBTENER CLIENTE: Crear consumidor final o buscar por NIT
             Cliente cliente;
             if (chkConsumidorFinal.Checked)
                 cliente = new Cliente { Nombre = "Consumidor Final", NIT = "CF", ConsumidorFinal = true };
             else
             {
                 cliente = listaClientes.FirstOrDefault(x => x.NIT == txtNIT.Text);
-                if (cliente == null) { MessageBox.Show("Debe guardar el cliente primero."); return; }
+                if (cliente == null)
+                {
+                    MessageBox.Show("Debe guardar el cliente primero.");
+                    return;
+                }
             }
 
-            double limiteLitrosApp = 0.0; // litros en escala "app" (1 litro app = Q37.35 = 50ml reales)
+            // VARIABLE: Litros en escala "app" (1 litro app = Q37.35 = 50ml reales)
+            double limiteLitrosApp = 0.0;
 
+            // CREAR ABASTECIMIENTO según el tipo seleccionado
             if (rdbPrepago.Checked)
             {
+                // Leer monto ingresado por el usuario
                 if (!double.TryParse(txtMonto.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double monto)
                     && !double.TryParse(txtMonto.Text, out monto))
                 {
@@ -264,26 +296,31 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                     return;
                 }
 
-                // Calcular cuántos litros "app" corresponden al monto
+                // Calcular cuántos litros "app" equivalen al monto pagado
+                // Ejemplo: Q100 / Q37.35 = 2.68 litros app
                 limiteLitrosApp = monto / Config.PrecioPorLitro;
 
+                // Crear objeto de tipo Prepago
                 var ap = new AbastecimientoPrepago
                 {
                     Cliente = cliente,
                     NumeroBomba = numeroBomba,
                     MontoPagado = monto,
-                    LimiteLitrosRequested = limiteLitrosApp,
+                    LimiteLitrosRequested = limiteLitrosApp,  // Litros que debe despachar
                     Calibrado = false
                 };
                 abastecimientoActual = ap;
             }
             else if (rdbTanqueLleno.Checked)
             {
+                // Crear objeto de tipo Tanque Lleno (sin límite)
                 abastecimientoActual = new AbastecimientoTanqueLleno
                 {
                     Cliente = cliente,
                     NumeroBomba = numeroBomba
                 };
+                // Nota: En tanque lleno, limiteLitrosApp queda en 0.0
+                //       El Arduino recibe {"bomba":1, "tanqueLleno":true}
             }
             else
             {
@@ -291,31 +328,43 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                 return;
             }
 
+            // Asignar ID y guardar en registro
             abastecimientoActual.Id = cliente.NIT;
             controlador.Registro.Agregar(abastecimientoActual);
 
-            // Generar JSON — ControladorCentral escala internamente los litros app → reales
+            // GENERAR ORDEN JSON para enviar al Arduino
+            // El ControladorCentral aplica internamente ESCALA_LITROS (0.05)
+            // convirtiendo litros app → litros reales
             string json = controlador.EnviarOrdenJSON(abastecimientoActual, limiteLitrosApp);
 
-            if (serialArduino == null || !serialArduino.IsOpen) InicializarSerial();
+            // VERIFICAR PUERTO SERIE: Si no está abierto, intentar abrirlo
+            if (serialArduino == null || !serialArduino.IsOpen)
+                InicializarSerial();
 
+            // ENVIAR ORDEN al Arduino por puerto serie
             if (serialArduino != null && serialArduino.IsOpen)
             {
+                // Resetear eventos de espera para recibir confirmación (ACK)
                 ackEvent.Reset();
                 ackReceived = false;
                 try
                 {
                     Debug.WriteLine($"Enviando: {json}");
-                    serialArduino.WriteLine(json);
+                    serialArduino.WriteLine(json);  // <--- AQUÍ SE ENVÍA LA ORDEN
+                                                    // El Arduino recibe algo como: {"bomba":1,"limiteLitros":0.134}
+                                                    // o {"bomba":1,"tanqueLleno":true}
                 }
-                catch (Exception ex) { MessageBox.Show($"Error al escribir en puerto: {ex.Message}"); }
-
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al escribir en puerto: {ex.Message}");
+                }
             }
             else
                 MessageBox.Show("Puerto serie no disponible. Orden no enviada.");
 
-            bomba.Iniciar();
-            lblLitrosServidos.Text = "0.00";
+            // ACTUALIZAR ESTADO LOCAL
+            bomba.Iniciar();                    // Marcar bomba como ocupada
+            lblLitrosServidos.Text = "0.00";   // Reiniciar visualización
             lblTotalCobrar.Text = "0.00";
             MessageBox.Show("Abastecimiento iniciado.");
         }
@@ -378,75 +427,94 @@ namespace PROYECTO_FINAL_PROGRA_MLG
         {
             try
             {
+                // Leer una línea JSON enviada por el Arduino (ej: {"bomba":1,"litrosServidos":0.023})
                 string json = serialArduino.ReadLine();
+
+                // Invocar en el hilo de la UI para actualizar controles de forma segura
                 this.Invoke(new Action(() =>
                 {
-                    // Detectar ACK de inicio
+                    // --- DETECTAR ACK (confirmación de inicio) ---
+                    // El Arduino responde con {"ok":true, "bomba":1, "limiteLitros":0.5}
+                    // cuando recibió correctamente la orden de inicio
                     try
                     {
                         var j = JObject.Parse(json);
                         if (j["ok"] != null && j.Value<bool>("ok"))
                         {
-                            lastAckBomba = j.Value<int?>("bomba") ?? 0;
-                            lastAckLimite = j.Value<double?>("limiteLitros") ?? 0.0;
-                            ackReceived = true;
-                            ackEvent.Set();
-                            return; // No procesar más este mensaje
+                            lastAckBomba = j.Value<int?>("bomba") ?? 0;           // Guardar bomba que confirmó
+                            lastAckLimite = j.Value<double?>("limiteLitros") ?? 0.0; // Guardar límite enviado
+                            ackReceived = true;      // Marcar que se recibió ACK
+                            ackEvent.Set();          // Desbloquear hilo que esperaba confirmación
+                            return;                  // Salir, este mensaje ya fue procesado
                         }
 
-                        // Detectar finalización
+                        // --- DETECTAR FINALIZACIÓN DEL DESPACHO ---
+                        // El Arduino envía {"bomba":1, "finalizado":true} cuando terminó de despachar
                         if (j["finalizado"] != null && j.Value<bool>("finalizado"))
                         {
-                            lastStopBomba = j.Value<int?>("bomba") ?? 0;
-                            stopReceived = true;
-                            stopEvent.Set();
+                            lastStopBomba = j.Value<int?>("bomba") ?? 0;  // Guardar bomba que finalizó
+                            stopReceived = true;    // Marcar que se recibió señal de parada
+                            stopEvent.Set();        // Desbloquear hilo que esperaba finalización
                         }
                     }
-                    catch { }
+                    catch { }  // Si no se puede parsear, continuar con otros procesamientos
 
-                    // Pasar al controlador para actualizar registro
+                    // --- PROCESAMIENTO PRINCIPAL ---
+                    // Delegar al controlador la lógica de actualizar registro y convertir escalas
                     controlador.RecibirRespuestaJSON(json);
 
-                    // Actualizar UI
+                    // --- ACTUALIZAR INTERFAZ DE USUARIO ---
                     try
                     {
                         var j2 = JObject.Parse(json);
 
-                        // Ignorar ACKs
+                        // Ignorar mensajes de ACK (ya procesados arriba)
                         if (j2["ok"] != null) return;
 
                         int bombaId = j2.Value<int?>("bomba") ?? 0;
 
+                        // Verificar que este mensaje corresponde al abastecimiento actual
                         if (abastecimientoActual == null || abastecimientoActual.NumeroBomba != bombaId) return;
 
+                        // --- ACTUALIZAR LITROS EN TIEMPO REAL ---
+                        // Cuando llega {"bomba":1, "litrosServidos": 0.023}
+                        // ya vino convertido de reales a app por RecibirRespuestaJSON
                         if (j2.TryGetValue("litrosServidos", out var lt) && lt.Type != JTokenType.Null)
                         {
-                            // LitrosServidos ya fue convertido a escala app por RecibirRespuestaJSON
+                            // Mostrar en la interfaz los litros servidos hasta el momento
                             lblLitrosServidos.Text = abastecimientoActual.LitrosServidos.ToString("0.00");
+                            // Mostrar el total acumulado (litros × precio)
                             lblTotalCobrar.Text = abastecimientoActual.TotalCobrado.ToString("0.00");
+                            // Cálculo alternativo en tiempo real (no se usa en UI)
                             double totalTiempoReal = abastecimientoActual.LitrosServidos * abastecimientoActual.PrecioPorLitro;
-
                         }
 
+                        // --- PROCESAR FINALIZACIÓN DEL DESPACHO ---
+                        // Cuando llega {"bomba":1, "finalizado":true}
                         if (j2.TryGetValue("finalizado", out var tf) && tf.Type == JTokenType.Boolean && tf.Value<bool>())
                         {
                             Abastecimiento aFinalizado;
-                            lock (_lockAbastecimiento)
+                            lock (_lockAbastecimiento)  // Bloquear para evitar conflictos con hilos
                             {
                                 aFinalizado = abastecimientoActual;
-                                abastecimientoActual = null;
+                                abastecimientoActual = null;  // Limpiar porque ya terminó
                             }
 
-                            // Puede ser null si buttonDetener ya lo procesó — ignorar
+                            // Si ya fue procesado por botón Detener, ignorar
                             if (aFinalizado == null) return;
 
+                            // Calcular totales finales (litros × precio)
                             aFinalizado.Procesar();
+                            // Liberar la bomba para que otro cliente pueda usarla
                             controlador.Bombas[bombaId - 1].Finalizar();
+                            // Guardar como pendiente de cobro (el usuario debe presionar "Cobrar")
                             abastecimientoPendienteCobro = aFinalizado;
 
+                            // Actualizar UI con valores finales
                             lblLitrosServidos.Text = aFinalizado.LitrosServidos.ToString("0.00");
                             lblTotalCobrar.Text = aFinalizado.TotalCobrado.ToString("0.00");
 
+                            // Notificar al usuario que el despacho terminó
                             MessageBox.Show(
                                 $"Abastecimiento finalizado.\n" +
                                 $"Litros: {aFinalizado.LitrosServidos:0.00}\n" +
@@ -455,10 +523,10 @@ namespace PROYECTO_FINAL_PROGRA_MLG
                                 "Finalizado");
                         }
                     }
-                    catch { }
+                    catch { }  // Errores de UI no detienen el procesamiento
                 }));
             }
-            catch { }
+            catch { }  // Errores de lectura del puerto serie se ignoran silenciosamente
         }
 
 
